@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="robots" content="noindex, nofollow">
+  <title>从用户需求到功能需求数据集构建 | LionFish</title>
+  <meta name="description" content="研究背景在软件需求分析过程中，用户需求通常以自然语言形式出现，表达方式灵活、粒度不一，往往难以直接转化为清晰、可实现的功能需求。随着大语言模型的发展，越来越多研究尝试使用模型自动完成“从用户需求到功能需求”的转换任务，但模型在这一过程中仍然可能产生幻觉、遗漏约束条件，或者输出结构不完整的结果。 基于这一问题，我参与了“用户需求-功能需求”数据集构建相关工作，希望通过人工提取、分析和校验，建立一套更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从用户需求到功能需求数据集构建">
+<meta property="og:url" content="https://wanzheng289.github.io/my-webside/2026/05/14/%E4%BB%8E%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E5%88%B0%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E6%95%B0%E6%8D%AE%E9%9B%86%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:site_name" content="LionFish">
+<meta property="og:description" content="研究背景在软件需求分析过程中，用户需求通常以自然语言形式出现，表达方式灵活、粒度不一，往往难以直接转化为清晰、可实现的功能需求。随着大语言模型的发展，越来越多研究尝试使用模型自动完成“从用户需求到功能需求”的转换任务，但模型在这一过程中仍然可能产生幻觉、遗漏约束条件，或者输出结构不完整的结果。 基于这一问题，我参与了“用户需求-功能需求”数据集构建相关工作，希望通过人工提取、分析和校验，建立一套更">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-14T06:32:28.000Z">
+<meta property="article:modified_time" content="2026-05-14T07:00:47.502Z">
+<meta property="article:author" content="LionFish">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="数据集">
+<meta property="article:tag" content="软件工程">
+<meta property="article:tag" content="需求工程">
+<meta name="twitter:card" content="summary">
+  <link rel="icon" href="/my-webside/images/logo.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-regular/result.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-medium/result.css">
+  
+<link rel="stylesheet" href="/my-webside/css/style.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div class="site-wrapper">
+    <header class="site-header">
+  <div class="header-inner">
+    <a class="site-title" href="/my-webside/"><img class="site-logo" src="/my-webside/images/logo.svg" alt="Logo">LionFish</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="nav-toggle-icon"></span>
+    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/my-webside/">首页</a>
+      
+        <a class="nav-link" href="/my-webside/categories/profile/">个人信息</a>
+      
+        <a class="nav-link" href="/my-webside/categories/projects/">项目经历</a>
+      
+        <a class="nav-link" href="/my-webside/categories/research/">科研经历</a>
+      
+    </nav>
+  </div>
+</header>
+
+    <main class="main-content">
+      <article class="post">
+  <header class="post-header">
+    <h1 class="post-title">从用户需求到功能需求数据集构建</h1>
+    <div class="post-meta">
+      <time datetime="2026-05-14T06:32:28.000Z">2026-05-14</time>
+      
+        <span class="separator">&middot;</span>
+        
+          <a href="/my-webside/categories/research/">research</a>
+        
+      
+    </div>
+  </header>
+
+  <div class="post-body-wrapper">
+    <div class="post-content">
+      <h2 id="研究背景"><a href="#研究背景" class="headerlink" title="研究背景"></a>研究背景</h2><p>在软件需求分析过程中，用户需求通常以自然语言形式出现，表达方式灵活、粒度不一，往往难以直接转化为清晰、可实现的功能需求。随着大语言模型的发展，越来越多研究尝试使用模型自动完成“从用户需求到功能需求”的转换任务，但模型在这一过程中仍然可能产生幻觉、遗漏约束条件，或者输出结构不完整的结果。</p>
+<p>基于这一问题，我参与了“用户需求-功能需求”数据集构建相关工作，希望通过人工提取、分析和校验，建立一套更可靠的研究基础，用于评估不同模型在需求转换任务上的表现。</p>
+<h2 id="研究目标"><a href="#研究目标" class="headerlink" title="研究目标"></a>研究目标</h2><p>这项工作的核心目标主要包括：</p>
+<ul>
+<li>从软件说明书中提取高质量的用户需求描述</li>
+<li>构建用户需求与功能需求之间的对应关系</li>
+<li>评估不同大模型输出功能需求的准确率与幻觉率</li>
+<li>借助需求分析方法，对提取结果进行完整性校验</li>
+</ul>
+<h2 id="我的工作内容"><a href="#我的工作内容" class="headerlink" title="我的工作内容"></a>我的工作内容</h2><p>在这项研究中，我主要参与了以下工作：</p>
+<ul>
+<li>从软件说明书中人工提取用例描述与用户需求</li>
+<li>对各类大模型生成的功能需求结果进行整理与比对</li>
+<li>分析模型输出中存在的缺失、偏差与幻觉问题</li>
+<li>使用 <code>E-R 图</code>、<code>CRUD 矩阵</code> 及五类关注点方法对需求进行完整性校验</li>
+</ul>
+<h2 id="研究过程"><a href="#研究过程" class="headerlink" title="研究过程"></a>研究过程</h2><h3 id="1-用户需求人工提取"><a href="#1-用户需求人工提取" class="headerlink" title="1. 用户需求人工提取"></a>1. 用户需求人工提取</h3><p>研究首先从真实软件说明书出发，由人工阅读文档并提取其中的用户需求或用例描述。相比直接依赖模型自动抽取，人工提取能够在前期构建阶段保证语义边界更加清晰，也为后续模型评估提供相对可靠的基准参考。</p>
+<h3 id="2-功能需求生成结果整理"><a href="#2-功能需求生成结果整理" class="headerlink" title="2. 功能需求生成结果整理"></a>2. 功能需求生成结果整理</h3><p>在获得用户需求后，我们将其输入不同模型，收集模型生成的功能需求输出。随后，对这些结果进行统一整理，从表达完整性、功能覆盖度、逻辑一致性等角度开展对比分析。</p>
+<h3 id="3-模型表现分析"><a href="#3-模型表现分析" class="headerlink" title="3. 模型表现分析"></a>3. 模型表现分析</h3><p>在分析模型输出时，我重点关注以下问题：</p>
+<ul>
+<li>是否准确覆盖了原始用户需求中的关键功能</li>
+<li>是否遗漏了必要的业务约束或交互逻辑</li>
+<li>是否生成了原始需求中并不存在的功能内容</li>
+<li>是否在表达上存在模糊、混杂或不可实现的问题</li>
+</ul>
+<p>通过这种方式，可以更具体地衡量不同模型在需求工程任务中的可用性，而不仅仅停留在表面语言流畅度上。</p>
+<h2 id="需求完整性校验方法"><a href="#需求完整性校验方法" class="headerlink" title="需求完整性校验方法"></a>需求完整性校验方法</h2><p>为了避免仅凭主观判断评价需求质量，我在研究中结合了多种需求分析方法来辅助校验。</p>
+<h3 id="1-E-R-图"><a href="#1-E-R-图" class="headerlink" title="1. E-R 图"></a>1. E-R 图</h3><p>通过实体-关系建模，可以检查需求描述中涉及的核心对象、属性及其关系是否完整。如果某一需求中提到了功能行为，但缺少关键实体或关系支撑，就可能意味着需求描述并不充分。</p>
+<h3 id="2-CRUD-矩阵"><a href="#2-CRUD-矩阵" class="headerlink" title="2. CRUD 矩阵"></a>2. CRUD 矩阵</h3><p>通过分析各实体在系统中的增删改查操作，可以更系统地检查功能需求是否覆盖主要业务行为。CRUD 矩阵有助于发现某些实体是否被遗漏使用，或者某些功能是否缺少必要操作。</p>
+<h3 id="3-五类关注点"><a href="#3-五类关注点" class="headerlink" title="3. 五类关注点"></a>3. 五类关注点</h3><p>我还结合五类关注点对需求进行审视，例如：</p>
+<ul>
+<li>可靠性</li>
+<li>身份与权限</li>
+<li>数据一致性</li>
+<li>交互流程</li>
+<li>异常情况处理</li>
+</ul>
+<p>这种方法能够帮助识别模型输出中常被忽略的非功能性要素或边界条件。</p>
+<h2 id="研究意义"><a href="#研究意义" class="headerlink" title="研究意义"></a>研究意义</h2><p>我认为，这项工作的价值主要体现在两个方面：</p>
+<ul>
+<li>从数据层面为“需求自动转换”研究提供更可靠的分析基础</li>
+<li>帮助理解大模型在软件工程任务中的优势与局限</li>
+</ul>
+<p>相比通用问答场景，需求工程任务对准确性、完整性和一致性要求更高。模型输出哪怕语言流畅，也不代表可以直接用于真实开发。因此，构建高质量数据集并建立合理的评估方法，是推动该方向落地的重要前提。</p>
+<h2 id="我的收获"><a href="#我的收获" class="headerlink" title="我的收获"></a>我的收获</h2><p>通过参与这项研究，我对需求工程的分析方法有了更具体的理解，也更深刻地认识到大模型在专业任务中的“能力”与“风险”是并存的。</p>
+<p>一方面，大模型确实能够在需求补全、结构整理和表达规范化方面提供帮助；另一方面，如果缺乏系统的校验机制，模型也很容易输出看似合理但实际上存在缺失或幻觉的问题。</p>
+<p>这项工作让我意识到，在将大模型应用于软件工程时，真正重要的不只是“模型会不会生成”，而是“生成结果是否经得起分析、验证与落地”。</p>
+
+    </div>
+
+    
+        <aside class="toc-sidebar">
+  <div class="toc-wrapper">
+    <h3 class="toc-title">Contents</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E7%9B%AE%E6%A0%87"><span class="toc-text">研究目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AE%B9"><span class="toc-text">我的工作内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E8%BF%87%E7%A8%8B"><span class="toc-text">研究过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E4%BA%BA%E5%B7%A5%E6%8F%90%E5%8F%96"><span class="toc-text">1. 用户需求人工提取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="toc-text">2. 功能需求生成结果整理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%A8%A1%E5%9E%8B%E8%A1%A8%E7%8E%B0%E5%88%86%E6%9E%90"><span class="toc-text">3. 模型表现分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%AE%8C%E6%95%B4%E6%80%A7%E6%A0%A1%E9%AA%8C%E6%96%B9%E6%B3%95"><span class="toc-text">需求完整性校验方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-E-R-%E5%9B%BE"><span class="toc-text">1. E-R 图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CRUD-%E7%9F%A9%E9%98%B5"><span class="toc-text">2. CRUD 矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BA%94%E7%B1%BB%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="toc-text">3. 五类关注点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E6%84%8F%E4%B9%89"><span class="toc-text">研究意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E6%94%B6%E8%8E%B7"><span class="toc-text">我的收获</span></a></li></ol>
+  </div>
+</aside>
+
+      
+  </div>
+
+  <footer class="post-footer">
+    
+      <div class="post-tags">
+        
+          <a href="/my-webside/tags/%E9%9C%80%E6%B1%82%E5%B7%A5%E7%A8%8B/">#需求工程</a>
+        
+          <a href="/my-webside/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/">#数据集</a>
+        
+          <a href="/my-webside/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">#大模型</a>
+        
+          <a href="/my-webside/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">#软件工程</a>
+        
+      </div>
+    
+    <nav class="post-nav">
+      
+      
+        <a class="next" href="/my-webside/2026/05/14/%E7%99%BD%E9%9B%AA%E6%AD%8C%E9%80%81%E6%AD%A6%E5%88%A4%E5%AE%98%E5%BD%92%E4%BA%AC-AI%E5%8A%A9%E5%AD%A6%E5%B0%8F%E7%A8%8B%E5%BA%8F/">白雪歌送武判官归京 AI助学小程序 &raquo;</a>
+      
+    </nav>
+  </footer>
+</article>
+
+    </main>
+    <footer class="site-footer">
+  <div class="footer-inner">
+    
+      <p>&copy; 2026 LionFish</p>
+    
+    <p>个人简历网站 &middot; 经历展示</p>
+  </div>
+</footer>
+
+  </div>
+  
+<script src="/my-webside/js/main.js"></script>
+
+</body>
+</html>
