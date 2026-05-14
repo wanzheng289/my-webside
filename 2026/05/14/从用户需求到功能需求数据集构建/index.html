@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
   <meta name="robots" content="noindex, nofollow">
   <title>从用户需求到功能需求数据集构建 | LionFish</title>
-  <meta name="description" content="研究背景在软件需求分析过程中，用户需求通常以自然语言形式出现，表达方式灵活、粒度不一，往往难以直接转化为清晰、可实现的功能需求。随着大语言模型的发展，越来越多研究尝试使用模型自动完成“从用户需求到功能需求”的转换任务，但模型在这一过程中仍然可能产生幻觉、遗漏约束条件，或者输出结构不完整的结果。 基于这一问题，我参与了“用户需求-功能需求”数据集构建相关工作，希望通过人工提取、分析和校验，建立一套更">
+  <meta name="description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="从用户需求到功能需求数据集构建">
 <meta property="og:url" content="https://wanzheng289.github.io/my-webside/2026/05/14/%E4%BB%8E%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E5%88%B0%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E6%95%B0%E6%8D%AE%E9%9B%86%E6%9E%84%E5%BB%BA/index.html">
 <meta property="og:site_name" content="LionFish">
-<meta property="og:description" content="研究背景在软件需求分析过程中，用户需求通常以自然语言形式出现，表达方式灵活、粒度不一，往往难以直接转化为清晰、可实现的功能需求。随着大语言模型的发展，越来越多研究尝试使用模型自动完成“从用户需求到功能需求”的转换任务，但模型在这一过程中仍然可能产生幻觉、遗漏约束条件，或者输出结构不完整的结果。 基于这一问题，我参与了“用户需求-功能需求”数据集构建相关工作，希望通过人工提取、分析和校验，建立一套更">
+<meta property="og:description" content="Here&#39;s something encrypted, password is required to continue reading.">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2026-05-14T06:32:28.000Z">
-<meta property="article:modified_time" content="2026-05-14T07:00:47.502Z">
+<meta property="article:modified_time" content="2026-05-14T09:01:01.640Z">
 <meta property="article:author" content="LionFish">
 <meta property="article:tag" content="大模型">
 <meta property="article:tag" content="数据集">
@@ -68,65 +68,34 @@
 
   <div class="post-body-wrapper">
     <div class="post-content">
-      <h2 id="研究背景"><a href="#研究背景" class="headerlink" title="研究背景"></a>研究背景</h2><p>在软件需求分析过程中，用户需求通常以自然语言形式出现，表达方式灵活、粒度不一，往往难以直接转化为清晰、可实现的功能需求。随着大语言模型的发展，越来越多研究尝试使用模型自动完成“从用户需求到功能需求”的转换任务，但模型在这一过程中仍然可能产生幻觉、遗漏约束条件，或者输出结构不完整的结果。</p>
-<p>基于这一问题，我参与了“用户需求-功能需求”数据集构建相关工作，希望通过人工提取、分析和校验，建立一套更可靠的研究基础，用于评估不同模型在需求转换任务上的表现。</p>
-<h2 id="研究目标"><a href="#研究目标" class="headerlink" title="研究目标"></a>研究目标</h2><p>这项工作的核心目标主要包括：</p>
-<ul>
-<li>从软件说明书中提取高质量的用户需求描述</li>
-<li>构建用户需求与功能需求之间的对应关系</li>
-<li>评估不同大模型输出功能需求的准确率与幻觉率</li>
-<li>借助需求分析方法，对提取结果进行完整性校验</li>
-</ul>
-<h2 id="我的工作内容"><a href="#我的工作内容" class="headerlink" title="我的工作内容"></a>我的工作内容</h2><p>在这项研究中，我主要参与了以下工作：</p>
-<ul>
-<li>从软件说明书中人工提取用例描述与用户需求</li>
-<li>对各类大模型生成的功能需求结果进行整理与比对</li>
-<li>分析模型输出中存在的缺失、偏差与幻觉问题</li>
-<li>使用 <code>E-R 图</code>、<code>CRUD 矩阵</code> 及五类关注点方法对需求进行完整性校验</li>
-</ul>
-<h2 id="研究过程"><a href="#研究过程" class="headerlink" title="研究过程"></a>研究过程</h2><h3 id="1-用户需求人工提取"><a href="#1-用户需求人工提取" class="headerlink" title="1. 用户需求人工提取"></a>1. 用户需求人工提取</h3><p>研究首先从真实软件说明书出发，由人工阅读文档并提取其中的用户需求或用例描述。相比直接依赖模型自动抽取，人工提取能够在前期构建阶段保证语义边界更加清晰，也为后续模型评估提供相对可靠的基准参考。</p>
-<h3 id="2-功能需求生成结果整理"><a href="#2-功能需求生成结果整理" class="headerlink" title="2. 功能需求生成结果整理"></a>2. 功能需求生成结果整理</h3><p>在获得用户需求后，我们将其输入不同模型，收集模型生成的功能需求输出。随后，对这些结果进行统一整理，从表达完整性、功能覆盖度、逻辑一致性等角度开展对比分析。</p>
-<h3 id="3-模型表现分析"><a href="#3-模型表现分析" class="headerlink" title="3. 模型表现分析"></a>3. 模型表现分析</h3><p>在分析模型输出时，我重点关注以下问题：</p>
-<ul>
-<li>是否准确覆盖了原始用户需求中的关键功能</li>
-<li>是否遗漏了必要的业务约束或交互逻辑</li>
-<li>是否生成了原始需求中并不存在的功能内容</li>
-<li>是否在表达上存在模糊、混杂或不可实现的问题</li>
-</ul>
-<p>通过这种方式，可以更具体地衡量不同模型在需求工程任务中的可用性，而不仅仅停留在表面语言流畅度上。</p>
-<h2 id="需求完整性校验方法"><a href="#需求完整性校验方法" class="headerlink" title="需求完整性校验方法"></a>需求完整性校验方法</h2><p>为了避免仅凭主观判断评价需求质量，我在研究中结合了多种需求分析方法来辅助校验。</p>
-<h3 id="1-E-R-图"><a href="#1-E-R-图" class="headerlink" title="1. E-R 图"></a>1. E-R 图</h3><p>通过实体-关系建模，可以检查需求描述中涉及的核心对象、属性及其关系是否完整。如果某一需求中提到了功能行为，但缺少关键实体或关系支撑，就可能意味着需求描述并不充分。</p>
-<h3 id="2-CRUD-矩阵"><a href="#2-CRUD-矩阵" class="headerlink" title="2. CRUD 矩阵"></a>2. CRUD 矩阵</h3><p>通过分析各实体在系统中的增删改查操作，可以更系统地检查功能需求是否覆盖主要业务行为。CRUD 矩阵有助于发现某些实体是否被遗漏使用，或者某些功能是否缺少必要操作。</p>
-<h3 id="3-五类关注点"><a href="#3-五类关注点" class="headerlink" title="3. 五类关注点"></a>3. 五类关注点</h3><p>我还结合五类关注点对需求进行审视，例如：</p>
-<ul>
-<li>可靠性</li>
-<li>身份与权限</li>
-<li>数据一致性</li>
-<li>交互流程</li>
-<li>异常情况处理</li>
-</ul>
-<p>这种方法能够帮助识别模型输出中常被忽略的非功能性要素或边界条件。</p>
-<h2 id="研究意义"><a href="#研究意义" class="headerlink" title="研究意义"></a>研究意义</h2><p>我认为，这项工作的价值主要体现在两个方面：</p>
-<ul>
-<li>从数据层面为“需求自动转换”研究提供更可靠的分析基础</li>
-<li>帮助理解大模型在软件工程任务中的优势与局限</li>
-</ul>
-<p>相比通用问答场景，需求工程任务对准确性、完整性和一致性要求更高。模型输出哪怕语言流畅，也不代表可以直接用于真实开发。因此，构建高质量数据集并建立合理的评估方法，是推动该方向落地的重要前提。</p>
-<h2 id="我的收获"><a href="#我的收获" class="headerlink" title="我的收获"></a>我的收获</h2><p>通过参与这项研究，我对需求工程的分析方法有了更具体的理解，也更深刻地认识到大模型在专业任务中的“能力”与“风险”是并存的。</p>
-<p>一方面，大模型确实能够在需求补全、结构整理和表达规范化方面提供帮助；另一方面，如果缺乏系统的校验机制，模型也很容易输出看似合理但实际上存在缺失或幻觉的问题。</p>
-<p>这项工作让我意识到，在将大模型应用于软件工程时，真正重要的不只是“模型会不会生成”，而是“生成结果是否经得起分析、验证与落地”。</p>
-
+      <div class="hbe hbe-container" id="hexo-blog-encrypt"
+     data-hbe-format="4"
+     data-wpm="Oh, this is an invalid password. Check and try again, please."
+     data-whm="Oh, this is an invalid password. Check and try again, please."
+     data-salt="24ff137d38a7f7a2891611eb6f6ea2f1b0629547a87359c369544a6790c3f0bb"
+     data-nonce="25e4c3e758d2803b5dab50c1"
+     data-kdf-iterations="250000"
+     data-auto-save="false">
+  <script id="hbeData" type="hbeData">
+    54d2c96b2a6db28b86325cc0b5785f07e02f28e39cc6c922f898ee234ee74369d2f512c4077f99444c5727e6ae5ec91a47a24f7c5a0b34ba1ec1be1d84e7957e9d48777b55079faef34f66395d9817d376a29e96ca3123f961594f6cc1f4c2136dc53ccea931b0d3bf46785e94a895dcf102e5f0dc18fb86ac984f8834d4d3699145038035117eacf1eb020ab4f4dd4506e8396bff7445eb9e8bb3e6cc2e7c587c3b21c935d365ed79f79e90867e9c1b86c3a9aab939fce39a64b569baa78ca9247974285b5d2f77c6bdc797fca2ba3cb1a0e3f062ab6b99bff8f5fd100642296c87992bf6046a64b573722fb1901a6dfdb50f4591fdf7391ebc96950e4e9cce277c6fba4a04ecc50c7ad55668dd58f9d0f5278c36af7806123119bec5db6ae0bed2bf54705f544cc93765d269d5500d06ba17bdb7ea5ca7acf53c6ed95e672c3575bf1855a9275d8e145dc71fabec94d8902dcfcda237c58870d0d8fbf4241406046f05460c593eda46a84d19d34f5141d80427be51d67b07ef599961892ac47451306c42a7ff0c791698d53647a7294d6d3c3b41893d9c9ac9d4aef58f02487babb985de172c5b4233450a3a65446280754208b220b057b7630c652ced8d06f4d3e535ab7023f86c7fdecde96757e9875eb32e0eb4fe66480287a8924e76f6b62a5b1086761caf422b9975f2dcce8afe1d7bf6fe19b054656873baf6666a6da43a3e2e0db59bc996ff432e50ca769f6b48f7290cf36c5af12cf9576804a607a5ab3ae604003b0b2473c0eda5a3626e16b31a94af60397e77a9cd11ceb43dd2239a11f0b4fa2ab275c9d935e900f927959b1165e5ba11b403462c769529d47e4671718693856557c290d9b2c1c3850bede26b63c039148ca9488e43f4ee1982f88cf43b6e7a2210f22e3cd66ad5f5f5f527552622deb5d8aa897cd82f3530457600ee3aa52747aeb2cc69044a6108e11e01ed58e1038b55ebe4a4b73b838b0292b6282059c494fcb7e580efe721f055421e9b9f6f415ed96c879a2ad58864e6d0b41fb358a666743adc5652ec116575121d571f716088e909f0abeadb790354130d99e882898a80249ab7f02bbdd95cbcbcebf230e4b8dbd8e922df1174e9bae1557f374ccc09c3cc4bfdf7bc33ba03fae1c56536a16ac90ca4952a92bfffa61382fb546204884e00636a23a16a6f15455b33351228f52154a8765c094a19b5515f1a1410501c88e5d9a281536d66f6be097965a45b36a783e71980b8e7760ca1b7b7529c9ddda90e2c18422e479d16ddcb60096422bb6ddde0ed19cfd3ac9ab55521dbfe68bbf2387820c1dc08538cc24012019c289f7def56001e8c71905f300af10cfb28d725956a48c51089f15764a40aca68cf323be420d8ba2aacc6ff79a66a2618b9538302c34245a5d73520682aee4cf836f17e97de96d1fba1589f768ddfcc4cdf71eb14ebcce902c6bfd1a9572bb1d1b262e80b576ef84d73607dbd4fa179b1c52efdc8a6ed94564785eb42c79fa6e771c16acdadf8a11e58c311c3d8589e204fd8a922ba2f109fc181272b1c69ebbc4f8a270702b982ff17431ceeb3f88567314d24383c4dc5e625fc7a0dadd7bfb352f919a524280cc140846c42c4f5693e65a918e2144f3bdb70f38d0070c7549d01207c6131f3c86d219814ccfc3e747a19c5f0b5ce3b4a056656e372b79d9613fa7d4b53b8d3a1473e29b9a0151520fc183e2d43db6c63afb4a7efed6ba2071bd4a6615ca20ce2339d28add88b154fc19d69d3d3af2a94a001fa6138ba01a3a16518d310b47beacf86272b6a934fea9aae089c99ef3fb8f6e5bab7eab262ea97909603cac79747f7f321c0df9abc8d9ab10e418440c237154bc41c25cc1c6e5f57364b8a9ea60f712075162ca7dda5234397daa1ca639db836f03544680241d1b6dea0461b6b5cd6d6acc63b39e238b74e33d0fa178816cbf650719ed773cdb639c2882c991220be2740e010eea30d30a06fc4d5b8da3bcf0bbf728e9f55eda11c3fcf8347ecd4c0248a585b3799bf2249bfcd10f0d88566541c442d4f9b9bf8ac459e137097784bcdf0dfc363a9ca28e50a0ce23a255aa274b87934857c22a655ddefd1c0047ff45556811f4d9bdd72d79b94b75a991beb5a128949515fd392023cd3728b76ac96b15c6eeb00838f191cb9092b4df32f7eb05f177373a92bfcff73a05bbd85020b65cfef8a6dd6a379f0b1f907d19bc2a65ee0fcb3a22bf68140a4b4351246ed0f5f02da7bd9349c007d3c1886e94e9c103755d50ec6da1b7a6cde3dd8bee0bfcd21647c3578c6c71e0054e1b796e0fb7797c3832cb47767b39a86fbd66e8574454b8a421f06bbc0795d8f78ce202926e144021ffe371cf5e0b60756b5546245b6c9424145eb72ebc08f0f84fd507c6a9c3fdfeb19726673a9bcdcfa61ed0f54fa022a3a66daa094a87a696a3b18b96e5b3815f0fcb3161fba030d5afc09cc67fd2a0da788aa3df0621006fc13f1f4d82f7af0b509dcf1836751328fc167fa271172425bca872515ce79bf966bee70fa44f1c11f306c17b90ef6be9e24f760142a1d5d22ea6ad6f8c4bbdccd10baee445a46caf58d18ff441d4c20a834e8acf1e3526af173e8e19b4dfe4ccc4ae8f05815980da960af0de7ea572672bad6bf564c00175c82066e42a303a9e8003c8c9f133b65c7e068230851602191f41e99e06ab0dd1c537f551d5cf8f0fd732ff20aade76dec02d7d7896453179843dba99541cd14d8e012aa844cb78788d180c8b16785ae8ea741411ad73c3f7117d2396d61f3351a4e7a22b3b7d2359a3e6ffc510d9b00162caeeddb1436c2042b68a53b189a8896336d3f4c8ab8164655d46f7d019cf580c9b3233fd024a31936b382d8f66a7a4f1e77f36d84e5f2a7dab3bcf27473fc9709e0534bc3ab512518b7f36c98bccd493eaa31815b83c470b879a0ee92595298a1b2a7d4cf33652d920758286a58ccae2323a954655848295f9ea1ce6b63f065ad5b85d4a1ede7d4f674905f26c915074d1cacb2895a84be96a7c4be3e5bea3865cfb8e3b201982cdafd6d2048ffe4f7f071cb5e5d13a9ad5b6b2486c24bce772282a4d57cfcc01bd92079cc92db3ab18cd1a27211d0d2c1628760838ddaa6c31045d3ce0415cfd5eb75f751b6090eee9f031241add490c8906ec03307f7a665d889ed92086e7892e5b19268d5116463e9b79f40a0a9d8c1c63efa35633a378062a9a417cc7b8cad1216265d8d6c5991f6fec85cea8daecef33850893f34f63f9ae3cdc63e57f5d546271f10a336ebb81effcfa8fb32ce262ca07c66b2f529a7a5b73b948b1abbf3bf1ead7fa9c01e25625d50662f06553014e76b00552e278fd6ffb721e837aa7c55185c8cbc1574a972cdcebeaa30e1227207d865a8dd0800c1c82f41310583b6f7402cbd4d82a08e1772a21ef236933f0b86cc40c7c78b4a49139197b646580300c1fa64e594c83719a9cd128219ee2edfe6fd9405bcdf947b2464391a2c015411a4085de8c3d733de96edef0667e4856fdca6fd1cfa41a7b12cd1a4fefdf6732dde50e6d7ff4d4ba37bab822a9520a3cd6e733ae64eb1fa891a005e897a2c8e3d2208716743e4b406f536ad102d7cda5bb32a678bcaafa6ac78a40fce9e11bc69edb80d77c0473a160ce73535fd7e26c34b13586f5037e9cc235ba5a31fefb4454ee73a425310d1463aeb94b18eaff77b4da4d871fbfba2c96e370b2532e1774a6f452a4b00286a75be18ea12f6906027fef4314b77402c372924746ad860885691ffbe69f2de55cd5dff1f69daab5d90a7d7dce1bc47dc408625dc8f1302b0349ca8e01300c25da9e1f1c859ea550ee37cb70934637714b57146e6b022494939926b387d346b7186d51c078ac25465e3810f42881bd1a64d3a72e3c76ddda1a571f05c32f26c8eb4d3d8caacfd9e7d9ce14374ddec4ca4c6611d8b6b16aceed54ad88beafd8707e727e60e54bd5b654a3d7be046829757002a89263eb15b9b64cae57f77c5e4e45073e8499708448c2fd1f007a876159bb5a04b20c4938c0b3326f816ab87c00c7692a44be07471abb26350791888923fa14c5d90059f577a9531a00bc5397d46af2d476c1ec576174df06bf3ea7af92a6425f7e6e0bbc255eb53e62175d2f97fa0c4e39209cffaebd5015a24cba9e0fc08de9a04d1aaf70deee5e036bdc6291c9d5b67301756809a2359160a2ce7f30e7ecfd8df08fd402df9f9bb96821fc930e14eb801657cd4e50f3d4768a8fe015014af0925a717a893e0c5849055a6b30939431a9d2eca852c19b24d78f5fbb6e20ca8310634fc9f9fbeb7816246002ddcd9382945cc8ec507d912cae853d7da9fd9736d32f647d31c715507e257036d91a20188bf6732477311fb91a38d4b248ce03374e19831828e54085e9387eaa36bc7dc4a582238b30096854c6d2a7cd2039e3b8e641d6cde28d97ecfefa7f1869b31493f9c6376f55cc12c38e8f950dc892018bc0ea95cfb9284e50db3a82fa79708f02fefbbb046600c6b5bd4df6aa803af5000f0ea5f16afe26dd576643b0241bb544ec2f025f1fd88add4bf6e113bfc85f34dda13a96e99eca8243c201bc3a17d927d10588e4435b845c13fc6c9884759d778ec2aff5a45227424da2c6244f9b7078733ab15314a317a2d10072f1b22e650f4b81cf727d8f3a64ee06e5a4030ceccdc7bd4b2c35acd65efd66fda2dd28382bd6424a7f319c8a4141b1b4f6ad9e8bb8250c705f85da315d37ddbf782f0d4390674b8dcbcb4ded318828da413fa7b91e00e7974a8a97b9c45b758099fc3e5e5a3542b48173e43080bb9f22714177ef9fded254431458803a1bff87a438648076474b065af6901ac1dcc5aa06b616b81136b3f76b439a1edc177d310c9719ea69b26834656ee00bf4ec413824656ba4324d19289bc0184bd5baa044af366b532bb0129b812d3e4b077852791f54c0a1a1be90e02a830c1e9ff043fbf7afe37524716ee42447ef21cb77b65492036d8c5e4fc997ef945efb18572a5dec661554b0faa4629a4c0114684ef454ec0f809a9075134734f42cd5e261ccb0f5ed547d29512631d3ebecbd8ab5a3880bd12a67a44a93433ae910f8869a59aa3a00a320aa0e4f683a5eadeb7e6705f83b536549d024e15a7d8d2cde2f6b8e33e94cb64504f46543171fc344b6d2ef8de47981544d0b6dfe00ca681805ce3fd87c40a9a92eca9d4fd5c5c11d31440f71bf07e77777c3e0b359a7dc5a0f9c3b63c12a40b33d057574eded6092cd7511a0b43ffd9bf1eb9883e2024652ef04f94463e19052950a5ceff6a9d6b696121175b089c612a6f13546518ff4d1299aef32b0352dc318aca6c337f21f593db2b3f7b7886b33897fe5bac1a1225741f4468cc18ccb00edf53c9a35859677721ad77967c7c146630cc6157f4a27960bf42fefd8cd3475dd499d957c75a3b658f76c8e7c4b0ac575af3f75eaa664d801e0e378837642fdf5f13889a3e84bb4f794a26529ce708efbb6ad24f73e7f3dce6dc9b87b51f595dec7a8705795f5c6fb06665f30426048123ceb612d6e485c7ef387aa1ff4a1120d67d3a453d48a1d88ac5ba96052c54ff98ca284bbeb5d21912e95e5f07adc23396e019a2088c1e8ea481dfa44b1b8773a5c0ec08392adbe42557d1c15911295067883d4dd6e600231a86e97b8f6ba4af6fc1397a4a545bf272bdb79822c663f9d57885448ded1ce199d457bd264aa2ca00e1e3dde24dd20f96ec970cc77b4fe6e8cad5b3ce08e8bbc8b4158ffb82fbe8338dec14686f56ac5b5d6cdc62fe77a55294ed6c5e061ce2eb8aa1aeab33b2e490cae47107a4228fe707da44a480d3b8ea6918641033121552693ab8b1bef674cd924a6fa2258f4972186976cce936de38b9eff790850346f932e49ac866ca61561df7e32c6dd702f2c276c2c646b4585f9d2c6dfa1c541df22b280f6eee305d476898931e8cb4a6fcf6fa1b498821360c2af8598747f98ff195e1f14a6c97d4db8b8d1cc966d1e1cec4b738c131d9405d261cb5f80b2010d895612e774fb06fe90062feead8b0a1d45495bee959860ae58f7f0a893597cd129a41601e92a67147eba844f91dcfd45037269c7fd5bc5ce044eb147785ad1f5998308c7e3a0b69919b3729104f42b7b4746f318b3c85cd43309692b1aaf660ba8caae25405f0d1f3ef19e582eb6449d78e10a1596aba97617d7955707fe65c0d4bfac540f1ac23324a8d826a3a1b092a908f0ff99147d1957d60f2a6a48f8967272d818d449e3caaaf2cc76ca99dee888f2146aba2d69b8d36cef488fd8ace86f77b8ebc10861f607c3a2e9c62b9295ead13c388b9ec4329100713bdc6a4d6cb5ef4cf26ce4840225d55b89813e2c2861f3a2dc6d78eaecb329f647189930113094c9cdaf0ea11fc0c962ffb7aa2e8806d1e32157d5697325396d90bc9fb22dffe1f4701f67529a3f9995a3cb8bcbd889243a18ff267adffb354b6aebb78f149ccdf6405ee50621fdbb49842911b42e6c079f876df45646c1f68e7fff889f43958909e7b10657a351b48c29b84dbf5a4622c0026688d68fc121797377b41b42887e11aade2d5b788b1ee2e60f17a1b93ff3834ee06ffc521538771e606b248da1c4e622fcf866910c5877b0bd35c931d3f4cfa0779934882b5c67a5b4012b90a2c3350fdba96586154f531cdbad9092089c63b3568596f5601997fb0755ed2bf597d1c0f103c1801b13844d45263756ecc9df5bd0e8d5e66135743a4ceaceb6729faf3c4253a6d9668c60c99b0590a462ed1bfb117502e90576dd1f428f34c81bed9f7c05e331851d57b9430fbf86ccf00190310649fa0c9a338a8a6d258bd7f06ac943c635153131626254d0ad632881a432835481cd6a688e90da0f02b0d61a29eb728fb2fd7517fce94b8e422778b557164b2b6cb095d60757894b000ed65dc6e3117d7b071b96699f008dde136facd3160792c8b44ff0bcb43cf5cd438af10fe0e9cc4bbb1d9e3f8a79a9f5fe20ebdeca236687559741197b954508d74b291b7388bfb4095cf6b60485e551fd8e4ac47abc13e8271bfbe18a2766042b4446b63bcdd3120efd8f0eac3db77c9197ac8c99b8849215d1fc2ecbdf8ca38131fa0349f7632a2e6f6a8e906d2eaf070f820fbc856a191a00692b5cb72204aa2b0b3148bc45c217689956e516eaf40409ef57ff9eebf1d91f21873fd44c766ab7a6e5aeeaeecf651e8e1a78a389b65ffa112c4b10eb3813bf0b2fed0a400deff9c17a67885cb3d971b6efe252d3fb7c76b8efe581cc97faf597a90805edfe06a028c1455ea08d95d6b25dfe0608c4e6c89606f3f0d7d397e7cbb96198bdec5f9e70e66bbe28d98261a93c77599ac7358478bfbb322e28333ae8e585080ed68f5cebb714a7340239abaefbf063c5033b7e73e3af8356e06f83de36e98450e13ea8cc0b29d8150a2e4ade7c706e07407bf438cdc47a34470995b24e085ecb4da7a2282ea949cbb0c8ac40861ec1e33d9e0903a4eafdc4c28edba2362efe2cb6b4831273bfc1627678d3a8470de8361ce44c5e45729fddcad6b78c6661b067b3b4acb846206dee0265967eadd6cca759e85bb37113861bdc792fdc3b4a1a631bef64f9949ae9f1969cb60a71aa142301dc394513af380bfa2b576ad8cdca93f6eac6a78178590734416aeb03ddd63337566edce3bcdf25f71b6f502a2eec65233f08eae84419636cb2cbf3fc2e9edf6b9a7977145cc5d8b17ce30eedd568cc9ce9eb1bd62082002a4b96c47d8134a498b40b64ec4c39c74a99cd9f32bdc3a40f01afb22894d2614e96244674343790a20f9cdf38e4043e6b0d8664285a74565958b9b0f5684932779916d1dc4ae77e4f0fd66c3e7e678d0b762949f128dc7090f84fb82980aa29ccb62276e4da7345063a390bf127766fee4af26e84df6a46160745c51aefce10c0b3285356853fc561a282607bfc51d4b9147e8a2c6e1e929b20814cf936716846c8afa8240909fdc3e431f65d45354fd5f8fbeb5c3c313727aac089c06e2f3c0ebb874b6b9b97de06df6d265d6a77c8b8cca78cea723cd13cb32cbc21dbb23e91797764838b6da12a517d9526d2d7d4c3673da5c67f2d6be07707dc9351b8d464d6b8de37003ddda24ccfbcdc02ac21640ef7c409b2ce8c23eb479c04030415c4c8b3edbfb60ae892c89a20154ff5b3b4a0451efe57cc220c5223426e726ecac3f964e372d9d7cddeb41ea422c4a70d17a13ccc25f05456f01818c0698ad4d90b991b5c18f3622972b7899ddd76f39df8e4952832f04b782a4e1dc72af71ad544b3e699f026fb00077e0f6ca9910de79552870f5f80b209f71caa3630667fc73419c5f991a4764cd9d0dcb41b026d9b3558c7732fe80767025c99997bc2f1bc0e41e048ce6475858b4f794003e1913ab7c824c85aaf4081e6c9dd05bab29d3dc0b2fe3fd04b514446308d8fafe2eccb3db8d374b4a0cbf1215d912fcce020940c51b406a8880e17495393bf14e4c1b21ca6e31893b853173e0fca45e03615b1129a99278d880f85a39b35e9f98327c85418155fd3682283d5ff1e5d04e66887a9fec90a5a5b473fef7f732cf7f154961980879ac204def16574fcf2c0340e1c4c36cea84552ce11893efd204047a8614a5064aa0e221de904b28399e3ad4abcb4cbebd74ac91033d3f66324e19b279b19c59f08a4d242c82e19768ff152a16856397a2e82dd4e7c9ca3792a27256da17f5db24e897e26f813f839a4de38edf19d95aa86c127ec987fc45d0c12594f2
+  </script>
+  <div class="hbe hbe-content">
+    <form id="hbeForm" class="hbe hbe-form" onsubmit="return false">
+      <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+      <button class="hbe hbe-button" type="submit">Decrypt</button>
+      <div class="hbe hbe-error" role="alert" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+<script data-pjax src="/my-webside/lib/hbe.9a88ff0505.js"></script><link href="/my-webside/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
-        <aside class="toc-sidebar">
-  <div class="toc-wrapper">
-    <h3 class="toc-title">Contents</h3>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E7%9B%AE%E6%A0%87"><span class="toc-text">研究目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AE%B9"><span class="toc-text">我的工作内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E8%BF%87%E7%A8%8B"><span class="toc-text">研究过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E4%BA%BA%E5%B7%A5%E6%8F%90%E5%8F%96"><span class="toc-text">1. 用户需求人工提取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E7%94%9F%E6%88%90%E7%BB%93%E6%9E%9C%E6%95%B4%E7%90%86"><span class="toc-text">2. 功能需求生成结果整理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%A8%A1%E5%9E%8B%E8%A1%A8%E7%8E%B0%E5%88%86%E6%9E%90"><span class="toc-text">3. 模型表现分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%AE%8C%E6%95%B4%E6%80%A7%E6%A0%A1%E9%AA%8C%E6%96%B9%E6%B3%95"><span class="toc-text">需求完整性校验方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-E-R-%E5%9B%BE"><span class="toc-text">1. E-R 图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CRUD-%E7%9F%A9%E9%98%B5"><span class="toc-text">2. CRUD 矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BA%94%E7%B1%BB%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="toc-text">3. 五类关注点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E6%84%8F%E4%B9%89"><span class="toc-text">研究意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E6%94%B6%E8%8E%B7"><span class="toc-text">我的收获</span></a></li></ol>
-  </div>
-</aside>
-
-      
   </div>
 
   <footer class="post-footer">
