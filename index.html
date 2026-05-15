@@ -19,11 +19,13 @@
   
 <link rel="stylesheet" href="/my-webside/css/style.css">
 
+  <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <meta name="generator" content="Hexo 8.1.2"></head>
 
 <body>
   <div class="site-wrapper">
-    <header class="site-header">
+    <div class="reading-progress" aria-hidden="true"></div>
+<header class="site-header">
   <div class="header-inner">
     <a class="site-title" href="/my-webside/"><img class="site-logo" src="/my-webside/images/logo.svg" alt="Logo">LionFish</a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
@@ -40,6 +42,10 @@
         <a class="nav-link" href="/my-webside/categories/research/">科研经历</a>
       
     </nav>
+    <button class="theme-toggle" aria-label="切换深色模式" title="切换深色模式">
+      <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
   </div>
 </header>
 
@@ -49,16 +55,15 @@
     <div class="landing-inner">
       <p class="landing-eyebrow">PERSONAL INFO</p>
       <h1 class="landing-title">LionFish</h1>
-      <p class="landing-subtitle">华东师范大学 · 软件工程学院 · 人工智能系统开发与分析方向</p>
+      <p class="landing-subtitle">ECNU|SEI|人工智能系统开发与分析方向</p>
       <div class="hero-facts">
-        <article class="fact-card"><span>学校</span><strong>华东师范大学</strong><p>2024.09 - 2028.06</p></article>
-        <article class="fact-card"><span>GPA</span><strong>3.4 / 4.0</strong><p>排名 71 / 222</p></article>
+        <article class="fact-card"><span>学校</span><strong>ECNU</strong><p>2024.09 - 2028.06</p></article>
+        <article class="fact-card"><span>GPA</span><strong>3.44 / 4.0</strong><p>排名 71 / 222</p></article>
         <article class="fact-card"><span>邮箱</span><strong><a href="mailto:sszzyy_2829289wmgl@126.com">sszzyy_2829289wmgl@126.com</a></strong></article>
         <article class="fact-card"><span>GitHub</span><strong><a href="https://github.com/wanzheng289" target="_blank" rel="noopener">wanzheng289</a></strong></article>
       </div>
       <div class="intro-card">
         <p><strong>核心课程：</strong>数据结构与算法、操作系统、计算机网络、最优化方法、算法设计与分析、离散数学、数据库系统与应用</p>
-        <p><strong>电话：</strong>13012236110</p>
       </div>
     </div>
   </section>
@@ -75,8 +80,9 @@
     <div class="landing-inner">
       <div class="section-heading"><p class="landing-eyebrow">PROJECTS</p><h2>项目概览</h2></div>
       <div class="card-grid">
-        <article class="info-card"><h3>《白雪歌送武判官归京》AI+AR 辅助教学微课</h3><ul><li>独立完成基于 uni-app + Vue3 的全栈开发，适配小程序端。</li><li>封装讯飞星火接口，构建 5 种差异化数字人，实现流式对话教学。</li><li>结合 AR 与游戏化设计，实现边塞成诗与 AI 飞花令模块。</li></ul></article>
-        <article class="info-card"><h3>FeynmanAgent：抗幻觉翻转课堂 AI 伴学系统</h3><ul><li>基于费曼学习法设计“以教促学”系统，申报本科生创新创业项目。</li><li>采用 LangChain 与有向状态机编排教学流。</li><li>集成安全对齐、记忆和 RAG 中间件，实现高置信度教学反馈。</li></ul></article>
+        <article class="info-card"><h3>古诗AI+AR辅助教学小程序</h3><ul><li>独立完成基于 uni-app + Vue3 的全栈开发，适配小程序端。</li><li>封装讯飞星火接口，构建 5 种差异化数字人，实现流式对话教学。</li><li>结合 AR 与游戏化设计，实现边塞成诗与 AI 飞花令模块。</li></ul></article>
+        <article class="info-card"><h3>古诗助学网站</h3><ul><li>基于 uni-app + Vue3 构建助学网站，覆盖导学案、知识拓展与思维导图三大模块。</li><li>设计分类切换式知识拓展页面，收录唐代边塞诗、送别文化等五类专题文章。</li><li>使用 ECharts tree 实现可交互知识导图，支持节点展开、缩放与拖拽漫游。</li></ul></article>
+        <article class="info-card"><h3>本科生创新创业项目：抗幻觉翻转课堂 AI 伴学系统</h3><ul><li>基于费曼学习法设计“以教促学”系统，申报本科生创新创业项目。</li><li>采用 LangChain 与有向状态机编排教学流。</li><li>集成安全对齐、记忆和 RAG 中间件，实现高置信度教学反馈。</li></ul></article>
       </div>
     </div>
   </section>
@@ -88,7 +94,6 @@
     
       <p>&copy; 2026 LionFish</p>
     
-    <p>个人简历网站 &middot; 经历展示</p>
   </div>
 </footer>
 
