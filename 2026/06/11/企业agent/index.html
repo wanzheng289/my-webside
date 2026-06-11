@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="robots" content="noindex, nofollow">
+  <title>基于 RAG 的企业客服运营 Multi-Tool Agent 平台 | LionFish</title>
+  <meta name="description" content="项目概述这个项目是一个面向企业客服与运营场景的 Multi-Tool Agent 平台。我把它包装成一个虚拟 SaaS 公司 Deedly CloudOps 的内部客服运营工作台：客服、客户成功或 on-call 工程师可以直接输入自然语言问题，系统会根据问题自动调用客户画像、历史工单、企业知识库 RAG、企业知识图谱和评测链路，最后生成带证据来源的答复。 我最初设计这个项目时，并不想只做一个“能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 RAG 的企业客服运营 Multi-Tool Agent 平台">
+<meta property="og:url" content="https://wanzheng289.github.io/my-webside/2026/06/11/%E4%BC%81%E4%B8%9Aagent/index.html">
+<meta property="og:site_name" content="LionFish">
+<meta property="og:description" content="项目概述这个项目是一个面向企业客服与运营场景的 Multi-Tool Agent 平台。我把它包装成一个虚拟 SaaS 公司 Deedly CloudOps 的内部客服运营工作台：客服、客户成功或 on-call 工程师可以直接输入自然语言问题，系统会根据问题自动调用客户画像、历史工单、企业知识库 RAG、企业知识图谱和评测链路，最后生成带证据来源的答复。 我最初设计这个项目时，并不想只做一个“能">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/enterp/%E9%A6%96%E9%A1%B51.png">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/enterp/%E9%A6%96%E9%A1%B52.png">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/enterp/RAG%E6%96%87%E6%A1%A3%E9%97%AE%E7%AD%94%E5%9C%BA%E6%99%AF.png">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/enterp/%E5%AE%A2%E6%9C%8D%E5%9B%9E%E5%A4%8D%E5%9C%BA%E6%99%AF.png">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/enterp/%E5%9B%BE%E8%B0%B1%E9%97%AE%E7%AD%94%E5%9C%BA%E6%99%AF.png">
+<meta property="article:published_time" content="2026-06-11T05:49:40.000Z">
+<meta property="article:modified_time" content="2026-06-11T07:17:44.739Z">
+<meta property="article:author" content="LionFish">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="FastAPI">
+<meta property="article:tag" content="LangGraph">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="Milvus">
+<meta property="article:tag" content="Neo4j">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="RAG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanzheng289.github.io/my-webside/images/projects/enterp/%E9%A6%96%E9%A1%B51.png">
+  <link rel="icon" href="/my-webside/images/logo.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-regular/result.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-medium/result.css">
+  
+<link rel="stylesheet" href="/my-webside/css/style.css">
+
+  <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div class="site-wrapper">
+    <div class="reading-progress" aria-hidden="true"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-title" href="/my-webside/"><img class="site-logo" src="/my-webside/images/logo.svg" alt="Logo">LionFish</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="nav-toggle-icon"></span>
+    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/my-webside/">首页</a>
+      
+        <a class="nav-link" href="/my-webside/categories/profile/">个人信息</a>
+      
+        <a class="nav-link" href="/my-webside/categories/projects/">项目经历</a>
+      
+        <a class="nav-link" href="/my-webside/categories/research/">科研经历</a>
+      
+    </nav>
+    <button class="theme-toggle" aria-label="切换深色模式" title="切换深色模式">
+      <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+    <main class="main-content">
+      <article class="post">
+  
+  <header class="post-header">
+    <p class="post-kicker">Project Dossier</p>
+    <h1 class="post-title">基于 RAG 的企业客服运营 Multi-Tool Agent 平台</h1>
+    <div class="post-meta post-meta-row">
+      <span class="post-meta-chip"><time datetime="2026-06-11T05:49:40.000Z">2026-06-11</time></span>
+      
+        
+          <a class="post-meta-chip" href="/my-webside/categories/projects/">projects</a>
+        
+      
+      
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/RAG/">#RAG</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/Agent/">#Agent</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/Python/">#Python</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/FastAPI/">#FastAPI</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/LangGraph/">#LangGraph</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/MCP/">#MCP</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/Neo4j/">#Neo4j</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/Milvus/">#Milvus</a>
+        
+      
+    </div>
+  </header>
+
+  <div class="post-body-wrapper">
+    <div class="post-paper">
+      <div class="post-content">
+        <h2 id="项目概述"><a href="#项目概述" class="headerlink" title="项目概述"></a>项目概述</h2><p>这个项目是一个面向企业客服与运营场景的 Multi-Tool Agent 平台。我把它包装成一个虚拟 SaaS 公司 <code>Deedly CloudOps</code> 的内部客服运营工作台：客服、客户成功或 on-call 工程师可以直接输入自然语言问题，系统会根据问题自动调用客户画像、历史工单、企业知识库 RAG、企业知识图谱和评测链路，最后生成带证据来源的答复。</p>
+<p>我最初设计这个项目时，并不想只做一个“能聊天的 RAG Demo”。普通 RAG 项目通常只能回答“文档里有什么”，但真实企业客服&#x2F;运营场景往往需要同时判断客户是谁、历史上发生过什么、当前问题影响哪些产品和团队、是否有相似工单、文档证据是否可靠、下一步应该转给谁处理。因此这个项目的重点不是单一问答能力，而是把企业客服场景里的多种上下文组织进一个可观测、可迁移、可评估的 Agent 工作流。</p>
+<p>项目目前支持三类核心问题：第一类是客服回复生成，例如“客户生产环境无法登录 SSO，请判断优先级并给出下一步建议”；第二类是企业知识问答，例如“总结某个部署 runbook 的注意事项，并说明涉及哪些团队或服务”；第三类是图谱增强问答，例如“某个客户和 SSO 产品有什么关系，历史上出现过什么问题”。在前端页面中，用户能看到 Agent 的最终回答，也能看到它调用了哪些工具、检索到了哪些 RAG 来源、命中了哪些客户记忆、查询到了哪些 KG 路径，以及本轮回答的评测信号。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/enterp/首页1.png" alt="企业客服运营 Multi-Tool Agent 平台首页" style="max-width: 100%;">
+  <p class="media-caption">平台首页：统一聊天入口与 Agent Evidence Brief 工作台</p>
+</div>
+
+<h2 id="为什么选择企业客服-运营场景"><a href="#为什么选择企业客服-运营场景" class="headerlink" title="为什么选择企业客服&#x2F;运营场景"></a>为什么选择企业客服&#x2F;运营场景</h2><p>我在项目选题时比较过医疗、企业、游戏&#x2F;运营&#x2F;客服等方向。医疗数据集相对容易找到，而且知识图谱也有天然空间，但如果没有真实业务流程，很容易变成单纯的医疗问答；游戏或运营场景也有 Agent 想象空间，但如果缺少领域数据，项目会显得不够可信。最后我选择企业客服&#x2F;运营，是因为这个场景同时具备 RAG、Memory、Tool Calling、Knowledge Graph 和评测链路的合理需求。</p>
+<p>在企业客服里，RAG 可以处理知识库、runbook、产品文档和内部 SOP；Memory 可以记录客户偏好、历史问题、沟通风格和待跟进事项；知识图谱可以表达客户、产品、工单、团队、服务、文档之间的关系；Tool Calling 可以把这些能力组合成真实工作流；Eval Harness 则可以评估检索、引用、工具调用和回答质量。这个组合比单纯做“文档问答”更接近真实企业里的 Agent 应用。</p>
+<p>为了让公开数据看起来不像一堆互不相关的文件，我设计了 <code>Deedly CloudOps Demo Workspace</code> 这个虚拟公司设定。公开数据集被映射成企业知识库、客户、产品、工单、团队、服务和图谱关系。例如 <code>SSO</code> 被设定为身份认证产品，<code>perf-canary</code> 被设定为部署&#x2F;回滚相关服务，<code>CustQRWQE</code> 被设定为一个曾经出现过 SSO 访问问题的客户。这样演示时用户看到的是一个完整业务环境，而不是孤立的数据样本。</p>
+<h2 id="技术架构"><a href="#技术架构" class="headerlink" title="技术架构"></a>技术架构</h2><p>项目后端基于 FastAPI 构建，核心模块包括 Agent Workflow、RAG、Memory、Knowledge Graph、Tool Layer、Eval Harness 和 MCP-like Servers。前端是一个轻量的聊天工作台，风格参考企业内部工具和 evidence workspace：左侧是对话区和工具轨迹，右侧是 Agent Evidence Brief，用于展示 RAG Sources、KG Paths、Memory Hits 和 Eval Report。</p>
+<p>整体链路可以概括为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">用户问题</span><br><span class="line">  -&gt; Tool Router / Workflow</span><br><span class="line">  -&gt; 客户画像与历史工单查询</span><br><span class="line">  -&gt; 企业知识库 RAG 检索</span><br><span class="line">  -&gt; 企业知识图谱查询</span><br><span class="line">  -&gt; Memory 读取与写入</span><br><span class="line">  -&gt; LLM 生成回答</span><br><span class="line">  -&gt; Trace / Sources / KG Paths / Eval Report 展示</span><br></pre></td></tr></table></figure>
+
+<p>RAG 部分使用 Milvus 存储向量，PostgreSQL 存储 parent chunks 和结构化记录，支持文档分块、向量检索、rerank 预留接口、citation 构建和来源展示。Memory 部分包括客户画像、历史工单、长期记忆和会话记忆，当前 Demo 通过 JSONL&#x2F;结构化样本实现最小闭环，并预留迁移到 PostgreSQL、Redis 和 Milvus 的路径。知识图谱部分参考了原有 RAGQnASystem 中的实体抽取、关系构建和 Neo4j 查询思路，但不再保留医疗插件，而是迁移到企业知识场景，用企业实体和关系建模客户运营问题。</p>
+<p>项目中还抽象了 MCP-like server 层，包括企业知识库、企业图谱、客户运营、Memory 和 Eval 等服务。这样做的目的不是为了增加概念，而是把稳定工具协议化，让 Agent 调用的工具边界更清晰，也方便后续替换成真正的 MCP Server 或企业内部服务。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/enterp/首页2.png" alt="企业 Agent 证据工作台与工具轨迹" style="max-width: 100%;">
+  <p class="media-caption">证据工作台：集中展示工具调用、RAG Sources、KG Paths、Memory 和 Eval Report</p>
+</div>
+
+<h2 id="数据与业务建模"><a href="#数据与业务建模" class="headerlink" title="数据与业务建模"></a>数据与业务建模</h2><p>项目使用公开数据构建 Demo，但底层设计不绑定任何单一数据集。主要数据来源包括 EnterpriseRAG-Bench、Customer Support Conversations、Doc2Dial 和 MultiDoc2Dial。EnterpriseRAG-Bench 用于构建企业知识库和 RAG 评测集；Customer Support Conversations 用于构造客服历史、工单状态、客户画像和 Memory 场景；Doc2Dial&#x2F;MultiDoc2Dial 用于补充多轮文档问答评测。</p>
+<p>为了让系统能迁移到真实公司，我设计了一个标准企业数据模型。真实企业只需要把内部数据映射到五类 JSONL：</p>
+<ul>
+<li><code>documents</code>：企业知识库、runbook、产品文档、SOP、事故复盘。</li>
+<li><code>customers</code>：客户画像、行业、使用产品、沟通偏好、风险状态。</li>
+<li><code>tickets</code>：历史工单、严重程度、状态、问题类型、解决方案。</li>
+<li><code>products_services</code>：产品、服务、运行环境、负责人和依赖关系。</li>
+<li><code>relations</code>：客户、工单、产品、服务、团队和文档之间的图谱关系。</li>
+</ul>
+<p>这种设计的好处是，Demo 阶段可以使用公开数据集；迁移到真实企业时，只需要替换数据接入和 schema mapping，RAG、Memory、KG、Tool Calling 和 Eval 的主体链路可以保持不变。</p>
+<h2 id="核心功能实现"><a href="#核心功能实现" class="headerlink" title="核心功能实现"></a>核心功能实现</h2><h3 id="1-企业知识库-RAG"><a href="#1-企业知识库-RAG" class="headerlink" title="1. 企业知识库 RAG"></a>1. 企业知识库 RAG</h3><p>RAG 模块负责把企业文档转换为可检索知识。文档会先被清洗和分块，写入 PostgreSQL 的 parent chunk 表，同时将向量写入 Milvus。用户提问后，系统会根据 query 检索相关文档片段，并把来源、片段内容和文档元信息返回给 Agent。</p>
+<p>在前端展示上，我没有只把 RAG 结果藏在回答里，而是单独做了 <code>RAG Sources</code> 面板。这样面试官或用户可以直接看到回答依据来自哪些文档、source 是什么、doc_id 是什么、片段内容是否真的支持回答。这一点对于企业 Agent 很重要，因为企业客服不只关心“回答是否流畅”，还关心“回答是否可追溯”。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/enterp/RAG文档问答场景.png" alt="企业知识库 RAG 文档问答场景" style="max-width: 100%;">
+  <p class="media-caption">RAG 文档问答场景：回答、引用来源和文档片段同步展示</p>
+</div>
+
+<h3 id="2-客户-Memory-与历史工单"><a href="#2-客户-Memory-与历史工单" class="headerlink" title="2. 客户 Memory 与历史工单"></a>2. 客户 Memory 与历史工单</h3><p>客服场景天然需要 Memory。同一个客户可能有固定产品、常见问题、历史工单、沟通偏好和风险等级。项目中，Agent 可以通过工具读取客户画像和历史工单，并把这些信息用于判断优先级和生成客服回复。</p>
+<p>例如，当用户输入“客户 CustQRWQE 说生产环境无法登录 SSO，而且很着急”时，Agent 会先识别客户和产品，再查询客户画像、历史工单、相关图谱关系和企业知识库。最终回答不只是泛泛地说“请检查 SSO”，而是会结合客户历史、问题严重程度、可能影响范围和下一步处理建议。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/enterp/客服回复场景.png" alt="企业客服回复生成场景" style="max-width: 100%;">
+  <p class="media-caption">客服回复场景：结合客户画像、历史工单和知识库证据生成处理建议</p>
+</div>
+
+<h3 id="3-企业知识图谱"><a href="#3-企业知识图谱" class="headerlink" title="3. 企业知识图谱"></a>3. 企业知识图谱</h3><p>项目中的知识图谱用于表达结构化关系，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Customer -&gt; uses -&gt; Product</span><br><span class="line">Customer -&gt; opened -&gt; SupportTicket</span><br><span class="line">SupportTicket -&gt; mentions -&gt; Product</span><br><span class="line">Document -&gt; mentions -&gt; Service</span><br><span class="line">Service -&gt; owned_by -&gt; Team</span><br><span class="line">Service -&gt; runs_in -&gt; DeploymentEnv</span><br></pre></td></tr></table></figure>
+
+<p>相比纯向量检索，图谱更适合回答“谁负责”“和谁有关”“影响范围是什么”“这个客户和哪个产品&#x2F;工单&#x2F;团队有关系”这类问题。当前系统支持从企业文档和客服数据中构造节点与关系，并通过本地 JSONL 图或 Neo4j-compatible 查询接口进行检索。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/enterp/图谱问答场景.png" alt="企业知识图谱问答场景" style="max-width: 100%;">
+  <p class="media-caption">图谱问答场景：通过 KG Paths 展示客户、产品、工单和团队之间的关系</p>
+</div>
+
+<h3 id="4-Multi-Tool-Agent-Workflow"><a href="#4-Multi-Tool-Agent-Workflow" class="headerlink" title="4. Multi-Tool Agent Workflow"></a>4. Multi-Tool Agent Workflow</h3><p>项目不是简单把所有上下文一次性塞给模型，而是设计了 Tool Router 和多条工作流。不同问题会触发不同的工具组合：</p>
+<ul>
+<li>客服回复：客户画像 -&gt; 历史工单 -&gt; KG 查询 -&gt; RAG 检索 -&gt; 回复生成。</li>
+<li>图谱问答：RAG 检索 -&gt; KG 查询 -&gt; 带图谱路径和引用的答案。</li>
+<li>工单优先级：意图识别 -&gt; 情绪判断 -&gt; 优先级规则 -&gt; 相关工单 -&gt; 下一步建议。</li>
+</ul>
+<p>这样设计的好处是可解释性更强。用户不仅能看到最后回答，也能看到系统为什么调用这些工具、每个工具返回了什么证据。</p>
+<h3 id="5-Eval-Harness-与可观测性"><a href="#5-Eval-Harness-与可观测性" class="headerlink" title="5. Eval Harness 与可观测性"></a>5. Eval Harness 与可观测性</h3><p>为了避免项目停留在“看起来能跑”，我实现了评测链路。Eval Harness 支持 retrieval recall、citation coverage、tool call accuracy、KG query accuracy、memory usefulness、answer faithfulness 和 latency 等指标。前端会展示本轮回答的 Eval Report，例如工具调用数量、引用覆盖率、图谱路径数量和 Memory 命中数量。</p>
+<p>这部分是我认为项目比较重要的亮点之一。很多 Agent Demo 只展示最终回答，但真实企业落地需要知道回答是否有证据、工具是否调用正确、记忆是否真的被使用、延迟是否可接受。这个项目把这些信号放在同一个工作台里，便于调试和展示。</p>
+<h2 id="前端交互设计"><a href="#前端交互设计" class="headerlink" title="前端交互设计"></a>前端交互设计</h2><p>前端最初是三个独立页面：客服回复、图谱问答、工单优先级。后来我把它们合并成一个统一聊天页面，因为真实用户不会在使用前先判断“这个问题属于哪个 workflow”。现在用户只需要在输入框里提问，Agent 会自动路由到对应工具和工作流。</p>
+<p>页面采用 Deedly 风格的企业内部工作台设计：主区域显示对话、工具轨迹和回答；右侧 <code>Agent Evidence Brief</code> 固定展示工具调用、RAG Sources、KG Paths、Memory 和 Eval Report。这样的设计让项目更适合演示：面试官可以一眼看到这个系统不只是“调用大模型生成文本”，而是把 Agent 的执行过程和证据链展示出来。</p>
+<div class="media-visual">
+  <video controls style="max-width: 100%;">
+    <source src="/my-webside/images/projects/enterp/全流程演示.mp4" type="video/mp4">
+    您的浏览器不支持视频播放。
+  </video>
+  <p class="media-caption">全流程演示：从自然语言提问到工具路由、证据检索、回答生成和评测展示</p>
+</div>
+
+<h2 id="示例问题"><a href="#示例问题" class="headerlink" title="示例问题"></a>示例问题</h2><p>以下是我用于演示的典型问题：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">客户 CustQRWQE 说生产环境无法登录 SSO，而且很着急，请判断优先级并给出下一步处理建议。</span><br></pre></td></tr></table></figure>
+
+<p>这个问题会触发客户画像、历史工单、企业图谱和知识库检索。系统会判断这是生产环境访问问题，结合客户历史和 SSO 产品关系，给出高优先级处理建议。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SSO 和客户 CustQRWQE 有什么关系？历史上出现过什么问题？</span><br></pre></td></tr></table></figure>
+
+<p>这个问题主要展示 Knowledge Graph 和 Memory。系统会返回客户与 SSO 产品的关系、相关历史工单，以及图谱路径。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">总结 perf-canary 部署到 prod 的注意事项，并说明涉及哪些团队或服务。</span><br></pre></td></tr></table></figure>
+
+<p>这个问题主要展示企业知识库 RAG 和图谱增强问答。系统会检索 runbook、引用相关文档片段，并结合 KG 路径说明涉及的团队或服务。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查看 CustWHHQY 的客户画像、历史工单和常见问题。</span><br></pre></td></tr></table></figure>
+
+<p>这个问题主要展示客户运营视角，系统会聚合客户画像、历史工单和常见问题，适合客服或客户成功快速了解上下文。</p>
+<h2 id="工程化与可迁移性"><a href="#工程化与可迁移性" class="headerlink" title="工程化与可迁移性"></a>工程化与可迁移性</h2><p>这个项目的一个重要目标是“可以被真实企业替换数据后继续使用”。因此我没有把逻辑写死在某一个公开数据集上，而是把企业数据抽象成标准 schema，再通过 data pipeline 进入 RAG、Memory 和 KG 模块。</p>
+<p>如果迁移到真实公司，大致流程是：</p>
+<ol>
+<li>导出企业内部文档、客服工单、客户画像、产品服务目录和团队&#x2F;服务关系。</li>
+<li>转换成项目定义的 <code>documents</code>、<code>customers</code>、<code>tickets</code>、<code>products_services</code>、<code>relations</code> 五类 JSONL。</li>
+<li>运行 schema validator 检查字段、ID、关系和 JSONL 格式。</li>
+<li>重建 RAG 索引、客户 Memory 和企业知识图谱。</li>
+<li>用企业内部高频问题构造 eval set，持续评估检索、引用、工具调用和回答质量。</li>
+</ol>
+<p>这也是我希望在简历中强调的地方：项目不是一次性的 Demo，而是围绕真实企业数据接入、知识检索、工作流编排和评测闭环设计的 Agent 平台。</p>
+<h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><p>后端主要使用 Python、FastAPI、LangChain&#x2F;LangGraph 风格工作流、PostgreSQL、Milvus、Neo4j-compatible KG、Redis 和 Pydantic。前端使用原生 HTML&#x2F;CSS&#x2F;JavaScript 构建轻量工作台。数据处理部分使用 JSONL&#x2F;CSV pipeline，评测部分实现了独立的 eval harness 和 metrics。模型侧兼容 OpenAI-compatible API，也可以接入国内模型服务；embedding 默认使用本地 BGE-M3 兼容模型。</p>
+<h2 id="项目收获"><a href="#项目收获" class="headerlink" title="项目收获"></a>项目收获</h2><p>这个项目让我对 Agent 工程化有了更完整的理解。最开始我关注的是 RAG 和知识图谱，但做完整链路后发现，真正决定项目可信度的不是某一个模块，而是模块之间如何协作：RAG 负责事实证据，Memory 负责客户上下文，KG 负责结构化关系，Tool Calling 负责编排，Eval 负责判断系统是否真的做对了。</p>
+<p>另一个收获是对“可演示性”的理解。一个项目即使后端功能很多，如果前端无法展示证据链，面试官也很难快速理解亮点。因此我专门把 Tool Trace、RAG Sources、KG Paths、Memory Hits 和 Eval Report 做成可视化区域，让每一次回答都能被检查和解释。</p>
+<p>最后，我也意识到真实企业 Agent 的难点往往不是“调用一个模型”，而是如何把数据、权限、工具、评测和迁移流程设计清楚。这个项目虽然是基于公开数据集构建的 Demo，但我尽量把它做成一个接近真实企业落地形态的系统：有数据入口、有检索链路、有记忆、有图谱、有工具调用、有评测，也有可迁移的数据模型。</p>
+<h2 id="项目亮点总结"><a href="#项目亮点总结" class="headerlink" title="项目亮点总结"></a>项目亮点总结</h2><p>如果用一句话概括：这是一个把企业客服&#x2F;运营场景中的 RAG、Memory、Knowledge Graph、Tool Calling 和 Eval 统一到同一个可观测工作台中的 Agent 项目。</p>
+<p>我认为它最适合作为简历项目展示的亮点有三点：</p>
+<ul>
+<li>它不是单纯的文档问答，而是围绕企业客服&#x2F;运营工作流设计，能结合客户画像、历史工单、企业知识库和图谱关系生成答案。</li>
+<li>它有完整的工程结构，包括 FastAPI 后端、RAG 索引、Milvus&#x2F;PostgreSQL&#x2F;Neo4j&#x2F;Redis、MCP-like 工具封装、Eval Harness 和前端 Evidence Workspace。</li>
+<li>它考虑了真实企业迁移路径，通过标准数据模型把公开 Demo 和真实企业数据接入连接起来，展示了从原型到落地的工程思考。</li>
+</ul>
+
+      </div>
+    </div>
+
+    
+        <aside class="toc-sidebar">
+  <div class="toc-wrapper">
+    <h3 class="toc-title">Contents</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0"><span class="toc-text">项目概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9%E4%BC%81%E4%B8%9A%E5%AE%A2%E6%9C%8D-%E8%BF%90%E8%90%A5%E5%9C%BA%E6%99%AF"><span class="toc-text">为什么选择企业客服&#x2F;运营场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84"><span class="toc-text">技术架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%B8%8E%E4%B8%9A%E5%8A%A1%E5%BB%BA%E6%A8%A1"><span class="toc-text">数据与业务建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-text">核心功能实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BC%81%E4%B8%9A%E7%9F%A5%E8%AF%86%E5%BA%93-RAG"><span class="toc-text">1. 企业知识库 RAG</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%A2%E6%88%B7-Memory-%E4%B8%8E%E5%8E%86%E5%8F%B2%E5%B7%A5%E5%8D%95"><span class="toc-text">2. 客户 Memory 与历史工单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BC%81%E4%B8%9A%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1"><span class="toc-text">3. 企业知识图谱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Multi-Tool-Agent-Workflow"><span class="toc-text">4. Multi-Tool Agent Workflow</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Eval-Harness-%E4%B8%8E%E5%8F%AF%E8%A7%82%E6%B5%8B%E6%80%A7"><span class="toc-text">5. Eval Harness 与可观测性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E4%BA%A4%E4%BA%92%E8%AE%BE%E8%AE%A1"><span class="toc-text">前端交互设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E9%97%AE%E9%A2%98"><span class="toc-text">示例问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E5%8C%96%E4%B8%8E%E5%8F%AF%E8%BF%81%E7%A7%BB%E6%80%A7"><span class="toc-text">工程化与可迁移性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-text">技术栈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%94%B6%E8%8E%B7"><span class="toc-text">项目收获</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BA%AE%E7%82%B9%E6%80%BB%E7%BB%93"><span class="toc-text">项目亮点总结</span></a></li></ol>
+  </div>
+</aside>
+
+      
+  </div>
+
+  <footer class="post-footer">
+    
+      <div class="post-tags">
+        
+          <a href="/my-webside/tags/RAG/">#RAG</a>
+        
+          <a href="/my-webside/tags/Agent/">#Agent</a>
+        
+          <a href="/my-webside/tags/Python/">#Python</a>
+        
+          <a href="/my-webside/tags/FastAPI/">#FastAPI</a>
+        
+          <a href="/my-webside/tags/LangGraph/">#LangGraph</a>
+        
+          <a href="/my-webside/tags/MCP/">#MCP</a>
+        
+          <a href="/my-webside/tags/Neo4j/">#Neo4j</a>
+        
+          <a href="/my-webside/tags/Milvus/">#Milvus</a>
+        
+      </div>
+    
+    <nav class="post-nav">
+      
+        <a class="prev" href="/my-webside/2026/06/11/book-recommender/">&laquo; 基于Agent Workflow的RAG图书语义推荐系统</a>
+      
+      
+        <a class="next" href="/my-webside/2026/05/15/%E5%8F%A4%E8%AF%97AI%E5%8A%A9%E5%AD%A6%E5%B0%8F%E7%A8%8B%E5%BA%8F/">古诗AI助学小程序 &raquo;</a>
+      
+    </nav>
+  </footer>
+</article>
+
+    </main>
+    <footer class="site-footer">
+  <div class="footer-inner">
+    
+      <p>&copy; 2026 LionFish</p>
+    
+  </div>
+</footer>
+
+  </div>
+  
+<script src="/my-webside/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="robots" content="noindex, nofollow">
+  <title>大模型安全对齐研究 | LionFish</title>
+  <meta name="description" content="大语言模型的能力边界在过去几年急速扩张，然而能力与安全之间的张力也随之浮出水面：一个足够强大的模型，是否同样足够可信？这个问题驱使我于 2025 年 9 月加入智能软件实验室，开始参与”大模型价值观对齐与安全”方向的科研工作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大模型安全对齐研究">
+<meta property="og:url" content="https://wanzheng289.github.io/my-webside/2026/05/14/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%AE%89%E5%85%A8%E5%AF%B9%E9%BD%90%E7%A0%94%E7%A9%B6/index.html">
+<meta property="og:site_name" content="LionFish">
+<meta property="og:description" content="大语言模型的能力边界在过去几年急速扩张，然而能力与安全之间的张力也随之浮出水面：一个足够强大的模型，是否同样足够可信？这个问题驱使我于 2025 年 9 月加入智能软件实验室，开始参与”大模型价值观对齐与安全”方向的科研工作。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-14T06:05:49.000Z">
+<meta property="article:modified_time" content="2026-06-11T06:59:50.479Z">
+<meta property="article:author" content="LionFish">
+<meta property="article:tag" content="AI安全">
+<meta property="article:tag" content="大语言模型">
+<meta property="article:tag" content="科研">
+<meta name="twitter:card" content="summary">
+  <link rel="icon" href="/my-webside/images/logo.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-regular/result.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-medium/result.css">
+  
+<link rel="stylesheet" href="/my-webside/css/style.css">
+
+  <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div class="site-wrapper">
+    <div class="reading-progress" aria-hidden="true"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-title" href="/my-webside/"><img class="site-logo" src="/my-webside/images/logo.svg" alt="Logo">LionFish</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="nav-toggle-icon"></span>
+    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/my-webside/">首页</a>
+      
+        <a class="nav-link" href="/my-webside/categories/profile/">个人信息</a>
+      
+        <a class="nav-link" href="/my-webside/categories/projects/">项目经历</a>
+      
+        <a class="nav-link" href="/my-webside/categories/research/">科研经历</a>
+      
+    </nav>
+    <button class="theme-toggle" aria-label="切换深色模式" title="切换深色模式">
+      <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+    <main class="main-content">
+      <article class="post">
+  
+  <header class="post-header">
+    <p class="post-kicker">Research Notes</p>
+    <h1 class="post-title">大模型安全对齐研究</h1>
+    <div class="post-meta post-meta-row">
+      <span class="post-meta-chip"><time datetime="2026-05-14T06:05:49.000Z">2026-05-14</time></span>
+      
+        
+          <a class="post-meta-chip" href="/my-webside/categories/research/">research</a>
+        
+      
+      
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">#大语言模型</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/AI%E5%AE%89%E5%85%A8/">#AI安全</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/%E7%A7%91%E7%A0%94/">#科研</a>
+        
+      
+    </div>
+  </header>
+
+  <div class="post-body-wrapper">
+    <div class="post-paper">
+      <div class="post-content">
+        <p>大语言模型的能力边界在过去几年急速扩张，然而能力与安全之间的张力也随之浮出水面：一个足够强大的模型，是否同样足够可信？这个问题驱使我于 2025 年 9 月加入智能软件实验室，开始参与”大模型价值观对齐与安全”方向的科研工作。</p>
+<span id="more"></span>
+
+<h2 id="阶段一：理论建构与文献调研（2025-09-—-2026-02）"><a href="#阶段一：理论建构与文献调研（2025-09-—-2026-02）" class="headerlink" title="阶段一：理论建构与文献调研（2025.09 — 2026.02）"></a>阶段一：理论建构与文献调研（2025.09 — 2026.02）</h2><p>入组初期，我在课题组博士生的带领下系统学习大语言模型对齐领域的核心方法论。对齐（Alignment）的本质问题是：如何让模型的输出符合人类的意图与价值观？围绕这一问题，学界发展出了一系列技术路径。</p>
+<p><strong>基于人类反馈的强化学习（RLHF）</strong> 是目前最主流的对齐范式。其思路是先收集人类对模型输出的偏好数据，训练一个奖励模型来拟合这种偏好，再通过强化学习算法——通常是<strong>近端策略优化（PPO）</strong>——迭代优化语言模型的策略。这一路径效果显著，但训练流程复杂，奖励建模的稳定性也存在挑战。</p>
+<p>为此，研究者提出了更为简洁的替代方案。<strong>直接偏好优化（DPO）</strong> 绕过了显式的奖励模型，将偏好学习直接内化为语言模型的优化目标，在降低工程复杂度的同时保留了 RLHF 的核心思想。而 DeepSeek 提出的<strong>群体相对策略优化（GRPO）</strong> 则在强化学习框架下引入群体基线估计，在推理型任务上展现出更优的样本效率。</p>
+<p>在掌握这些算法的概念与流程后，我承担了课题组的文献调研工作。我系统收集整理了 RLHF 与 GRPO 在样本效率、奖励稳定性、训练稳定性等核心维度上的对比文献，梳理两条技术路径的差异与取舍，并制作 PPT 在组会上进行汇报，全程参与课题组对对齐方案选型的讨论与迭代。</p>
+<hr>
+<h2 id="阶段二：攻击与防御方向实践（2026-03-—-至今）"><a href="#阶段二：攻击与防御方向实践（2026-03-—-至今）" class="headerlink" title="阶段二：攻击与防御方向实践（2026.03 — 至今）"></a>阶段二：攻击与防御方向实践（2026.03 — 至今）</h2><p>随着对基础理论的把握逐渐稳固，我转入课题组”大模型攻击与防御”子方向的研究工作。这一方向关注的是大语言模型在对抗场景下的脆弱性：攻击者如何绕过安全机制，研究者又如何构建防御手段。</p>
+<h3 id="越狱攻击的技术图谱"><a href="#越狱攻击的技术图谱" class="headerlink" title="越狱攻击的技术图谱"></a>越狱攻击的技术图谱</h3><p>“越狱”（Jailbreak）是让模型忽视安全限制、输出有害内容的攻击技术总称。在系统阅读前沿文献后，我对该领域的主流方法有了较为全面的认识：</p>
+<ul>
+<li><strong>基于迭代优化的攻击</strong>：以 PAIR（Prompt Automatic Iterative Refinement）为代表，利用攻击者 LLM 自动迭代生成对抗提示，直至目标模型被成功诱导。</li>
+<li><strong>基于上下文诱导的攻击</strong>：以 DeepInception 为代表，通过构建多层嵌套的虚构场景，逐步消解模型的安全边界感知。</li>
+<li><strong>防御侧的随机平滑方法</strong>：Smooth-LLM 在输入层引入随机扰动，通过集成多次推理结果的一致性来检测并抵御对抗提示。</li>
+</ul>
+<h3 id="复现与工程实践"><a href="#复现与工程实践" class="headerlink" title="复现与工程实践"></a>复现与工程实践</h3><p>在课题组服务器上，我独立完成了上述三个经典算法的复现工作，涵盖 <a target="_blank" rel="noopener" href="https://github.com/patrickrchao/JailbreakingLLMs">PAIR</a>、<a target="_blank" rel="noopener" href="https://github.com/tmlr-group/DeepInception">DeepInception</a> 和 <a target="_blank" rel="noopener" href="https://github.com/arobey1/smooth-llm">Smooth-LLM</a>。复现过程并非简单地运行开源代码，而是需要深入理解各算法的实现细节，并针对课题研究的具体需求进行工程化改造——包括调整实验配置、适配不同的目标模型接口，以及优化实验流程以提升可复用性。</p>
+<p>这一阶段的实践让我初步具备了在真实 GPU 服务器环境下开发、部署与运行大语言模型实验的工程能力，也让我对攻防博弈在技术层面的非对称性有了更为具体的感受。</p>
+<hr>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>从对齐算法的理论调研，到越狱攻击与防御的实验复现，这段科研经历让我意识到：大模型的安全性既是一个工程问题，也是一个根本性的科学问题。如何在不牺牲模型能力的前提下建立可靠的价值边界，仍是这个领域悬而未决的核心挑战。我希望在后续的研究中，能够在这个方向上做出更有实质意义的探索。</p>
+
+      </div>
+    </div>
+
+    
+        <aside class="toc-sidebar">
+  <div class="toc-wrapper">
+    <h3 class="toc-title">Contents</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E4%B8%80%EF%BC%9A%E7%90%86%E8%AE%BA%E5%BB%BA%E6%9E%84%E4%B8%8E%E6%96%87%E7%8C%AE%E8%B0%83%E7%A0%94%EF%BC%882025-09-%E2%80%94-2026-02%EF%BC%89"><span class="toc-text">阶段一：理论建构与文献调研（2025.09 — 2026.02）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E4%BA%8C%EF%BC%9A%E6%94%BB%E5%87%BB%E4%B8%8E%E9%98%B2%E5%BE%A1%E6%96%B9%E5%90%91%E5%AE%9E%E8%B7%B5%EF%BC%882026-03-%E2%80%94-%E8%87%B3%E4%BB%8A%EF%BC%89"><span class="toc-text">阶段二：攻击与防御方向实践（2026.03 — 至今）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%8A%E7%8B%B1%E6%94%BB%E5%87%BB%E7%9A%84%E6%8A%80%E6%9C%AF%E5%9B%BE%E8%B0%B1"><span class="toc-text">越狱攻击的技术图谱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5"><span class="toc-text">复现与工程实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
+  </div>
+</aside>
+
+      
+  </div>
+
+  <footer class="post-footer">
+    
+      <div class="post-tags">
+        
+          <a href="/my-webside/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/">#大语言模型</a>
+        
+          <a href="/my-webside/tags/AI%E5%AE%89%E5%85%A8/">#AI安全</a>
+        
+          <a href="/my-webside/tags/%E7%A7%91%E7%A0%94/">#科研</a>
+        
+      </div>
+    
+    <nav class="post-nav">
+      
+        <a class="prev" href="/my-webside/2026/05/14/%E4%BB%8E%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E5%88%B0%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E6%95%B0%E6%8D%AE%E9%9B%86%E6%9E%84%E5%BB%BA/">&laquo; 从用户需求到功能需求：数据集构建与模型评估</a>
+      
+      
+        <a class="next" href="/my-webside/2026/05/14/%E6%9C%AC%E7%A7%91%E7%94%9F%E5%88%9B%E6%96%B0%E5%88%9B%E4%B8%9A%E9%A1%B9%E7%9B%AE/">本科生创新创业项目 &raquo;</a>
+      
+    </nav>
+  </footer>
+</article>
+
+    </main>
+    <footer class="site-footer">
+  <div class="footer-inner">
+    
+      <p>&copy; 2026 LionFish</p>
+    
+  </div>
+</footer>
+
+  </div>
+  
+<script src="/my-webside/js/main.js"></script>
+
+</body>
+</html>

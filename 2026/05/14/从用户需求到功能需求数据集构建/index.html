@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="robots" content="noindex, nofollow">
+  <title>从用户需求到功能需求：数据集构建与模型评估 | LionFish</title>
+  <meta name="description" content="研究背景在软件开发的早期阶段，需求分析是连接用户意图与系统实现的关键环节。用户需求通常以自然语言呈现，表达方式灵活、粒度不一，夹杂着大量隐含假设与业务上下文。如何将这些”模糊的期望”转化为”清晰、可实现的功能需求”，是软件工程领域长期面临的挑战。 随着大语言模型（LLM）能力的快速提升，越来越多的研究开始探索用模型自动完成这一转换任务。然而，模型在处理需求工程类任务时仍存在明显短板：它可能遗漏关键">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从用户需求到功能需求：数据集构建与模型评估">
+<meta property="og:url" content="https://wanzheng289.github.io/my-webside/2026/05/14/%E4%BB%8E%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E5%88%B0%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E6%95%B0%E6%8D%AE%E9%9B%86%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:site_name" content="LionFish">
+<meta property="og:description" content="研究背景在软件开发的早期阶段，需求分析是连接用户意图与系统实现的关键环节。用户需求通常以自然语言呈现，表达方式灵活、粒度不一，夹杂着大量隐含假设与业务上下文。如何将这些”模糊的期望”转化为”清晰、可实现的功能需求”，是软件工程领域长期面临的挑战。 随着大语言模型（LLM）能力的快速提升，越来越多的研究开始探索用模型自动完成这一转换任务。然而，模型在处理需求工程类任务时仍存在明显短板：它可能遗漏关键">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-05-14T06:32:28.000Z">
+<meta property="article:modified_time" content="2026-06-11T07:00:01.344Z">
+<meta property="article:author" content="LionFish">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="数据集">
+<meta property="article:tag" content="软件工程">
+<meta property="article:tag" content="需求工程">
+<meta name="twitter:card" content="summary">
+  <link rel="icon" href="/my-webside/images/logo.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-regular/result.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-medium/result.css">
+  
+<link rel="stylesheet" href="/my-webside/css/style.css">
+
+  <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div class="site-wrapper">
+    <div class="reading-progress" aria-hidden="true"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-title" href="/my-webside/"><img class="site-logo" src="/my-webside/images/logo.svg" alt="Logo">LionFish</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="nav-toggle-icon"></span>
+    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/my-webside/">首页</a>
+      
+        <a class="nav-link" href="/my-webside/categories/profile/">个人信息</a>
+      
+        <a class="nav-link" href="/my-webside/categories/projects/">项目经历</a>
+      
+        <a class="nav-link" href="/my-webside/categories/research/">科研经历</a>
+      
+    </nav>
+    <button class="theme-toggle" aria-label="切换深色模式" title="切换深色模式">
+      <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+    <main class="main-content">
+      <article class="post">
+  
+  <header class="post-header">
+    <p class="post-kicker">Research Notes</p>
+    <h1 class="post-title">从用户需求到功能需求：数据集构建与模型评估</h1>
+    <div class="post-meta post-meta-row">
+      <span class="post-meta-chip"><time datetime="2026-05-14T06:32:28.000Z">2026-05-14</time></span>
+      
+        
+          <a class="post-meta-chip" href="/my-webside/categories/research/">research</a>
+        
+      
+      
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/%E9%9C%80%E6%B1%82%E5%B7%A5%E7%A8%8B/">#需求工程</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/">#数据集</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">#大模型</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">#软件工程</a>
+        
+      
+    </div>
+  </header>
+
+  <div class="post-body-wrapper">
+    <div class="post-paper">
+      <div class="post-content">
+        <h2 id="研究背景"><a href="#研究背景" class="headerlink" title="研究背景"></a>研究背景</h2><p>在软件开发的早期阶段，需求分析是连接用户意图与系统实现的关键环节。用户需求通常以自然语言呈现，表达方式灵活、粒度不一，夹杂着大量隐含假设与业务上下文。如何将这些”模糊的期望”转化为”清晰、可实现的功能需求”，是软件工程领域长期面临的挑战。</p>
+<p>随着大语言模型（LLM）能力的快速提升，越来越多的研究开始探索用模型自动完成这一转换任务。然而，模型在处理需求工程类任务时仍存在明显短板：它可能遗漏关键业务约束、在缺乏上下文时产生幻觉，或输出结构不完整的功能描述——而这些问题往往难以通过语言流畅度来判断。</p>
+<p>正是在这一背景下，我参与了”用户需求到功能需求”配对数据集的构建工作。这项工作的核心动机，是在大模型评估之前先建立一套可靠的人工基准，从而使后续对模型能力的评估有迹可循、有据可依。</p>
+<h2 id="研究目标"><a href="#研究目标" class="headerlink" title="研究目标"></a>研究目标</h2><p>本项目的核心目标可以概括为：</p>
+<ul>
+<li>从真实软件说明书中，人工提取高质量的用户需求与用例描述</li>
+<li>建立用户需求与功能需求之间的配对对应关系，形成可用于评估的数据集</li>
+<li>分析主流大模型在需求转换任务上的准确率与幻觉率</li>
+<li>借助需求工程分析方法（E-R 图、CRUD 矩阵、五类关注点），对提取结果进行完整性校验</li>
+</ul>
+<h2 id="人工提取：构建可靠基准"><a href="#人工提取：构建可靠基准" class="headerlink" title="人工提取：构建可靠基准"></a>人工提取：构建可靠基准</h2><p>数据集构建的第一步，是从真实软件说明书中人工提取用户需求。</p>
+<p>与依赖模型自动抽取相比，人工提取的优势在于：语义边界更加清晰，能够准确识别说明书中的上下文依赖，并在提取过程中主动补全隐含的业务逻辑。这对于构建高质量基准数据至关重要——如果”标准答案”本身就存在缺失，后续对模型的评估将失去意义。</p>
+<p>在这一阶段，我通过仔细阅读多份软件说明书，将其中散布于不同章节的功能描述、约束条件与交互流程统一梳理，整理为结构化的用例描述，并为每条用户需求标注其对应的功能语义边界。</p>
+<h2 id="模型评估：输出整理与偏差分析"><a href="#模型评估：输出整理与偏差分析" class="headerlink" title="模型评估：输出整理与偏差分析"></a>模型评估：输出整理与偏差分析</h2><p>在获得人工提取的基准数据后，我们将同一批用户需求输入多个主流大模型，收集各模型生成的功能需求输出，并围绕以下四个维度展开对比分析：</p>
+<ol>
+<li><strong>功能覆盖度</strong>：模型是否准确覆盖了原始用户需求中的关键功能点？</li>
+<li><strong>约束完整性</strong>：是否遗漏了必要的业务约束、异常处理或交互逻辑？</li>
+<li><strong>幻觉率</strong>：是否生成了原始需求中并不存在的功能内容？</li>
+<li><strong>表达可用性</strong>：输出是否清晰、无歧义，能够直接支撑后续开发？</li>
+</ol>
+<p>这种评估方式将模型能力的衡量从”语言流畅度”拉回到”功能可用性”，更贴近需求工程在真实开发中的实际要求。分析过程中发现，即便模型输出的语言十分自然，也常常存在功能遗漏或逻辑混淆的情况——这正是人工基准难以被省略的原因。</p>
+<h2 id="需求完整性校验方法"><a href="#需求完整性校验方法" class="headerlink" title="需求完整性校验方法"></a>需求完整性校验方法</h2><p>为了避免需求评估过度依赖主观判断，研究中引入了三种结构化的需求分析方法作为校验工具。</p>
+<h3 id="E-R-图"><a href="#E-R-图" class="headerlink" title="E-R 图"></a>E-R 图</h3><p>实体-关系（E-R）建模从数据视角审视需求，检查功能描述中涉及的核心对象、属性及其关联关系是否完整。当某条功能需求中提到了某个操作行为，却缺少对应实体或实体间关系的支撑，往往意味着需求描述在数据层面存在遗漏。</p>
+<h3 id="CRUD-矩阵"><a href="#CRUD-矩阵" class="headerlink" title="CRUD 矩阵"></a>CRUD 矩阵</h3><p>CRUD 矩阵通过系统梳理各核心实体在系统中的”增删改查”操作，检验功能需求是否覆盖了主要的业务行为。这一方法有助于发现哪些实体的某类操作被遗漏，进而定位功能需求中的盲区，尤其对”用户操作-数据状态变化”这类隐含关系的发现很有帮助。</p>
+<h3 id="五类关注点"><a href="#五类关注点" class="headerlink" title="五类关注点"></a>五类关注点</h3><p>五类关注点方法从跨切面视角审视需求，通常涵盖以下几个维度：</p>
+<ul>
+<li><strong>身份与权限</strong>：谁有权触发该功能？权限边界是否明确？</li>
+<li><strong>数据一致性</strong>：跨操作的数据状态是否保持一致？</li>
+<li><strong>交互流程</strong>：用户与系统之间的交互步骤是否完整描述？</li>
+<li><strong>异常与边界情况</strong>：非正常路径下系统应如何响应？</li>
+<li><strong>可靠性要求</strong>：是否有性能、容错等非功能性约束被隐含其中？</li>
+</ul>
+<p>在模型生成的功能需求中，这类关注点往往最易被忽略。通过将其显式化，可以更系统地识别模型输出的覆盖盲区。</p>
+<h2 id="研究意义"><a href="#研究意义" class="headerlink" title="研究意义"></a>研究意义</h2><p>这项工作的价值主要体现在两个层面。</p>
+<p>其一，<strong>数据层面</strong>：高质量的人工标注数据集是评估大模型在需求工程任务上能力的基础。没有可靠的基准，所谓”模型能不能做”的结论都缺乏说服力。</p>
+<p>其二，<strong>方法层面</strong>：将 E-R 图、CRUD 矩阵与五类关注点引入模型评估流程，使评估维度从”生成了什么”延伸至”生成的是否完整、是否合理”，为后续大模型在软件工程任务中的系统性评测提供了方法论参考。</p>
+<h2 id="个人收获与思考"><a href="#个人收获与思考" class="headerlink" title="个人收获与思考"></a>个人收获与思考</h2><p>参与这项研究，让我对需求工程的结构化分析方法有了更具体的理解，也对大模型在专业领域任务中的”能力边界”有了更清醒的认识。</p>
+<p>大模型在需求补全与结构整理方面确实能够提供有价值的帮助——它可以快速归纳关键功能点，也能在一定程度上补全语义上明显缺失的描述。但在缺乏系统校验机制的情况下，模型也很容易输出”看似合理、实则存在关键遗漏”的结果，这类问题恰恰比明显的错误更危险，因为它更难被察觉。</p>
+<p>这项工作让我意识到，将大模型真正用于软件工程任务，真正重要的问题不是”模型会不会生成”，而是”生成的结果能否经得起分析、验证与落地”。构建高质量评估数据集、建立合理的评估方法，是让大模型在这一领域走向可信应用的必要前提。</p>
+
+      </div>
+    </div>
+
+    
+        <aside class="toc-sidebar">
+  <div class="toc-wrapper">
+    <h3 class="toc-title">Contents</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF"><span class="toc-text">研究背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E7%9B%AE%E6%A0%87"><span class="toc-text">研究目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%BA%E5%B7%A5%E6%8F%90%E5%8F%96%EF%BC%9A%E6%9E%84%E5%BB%BA%E5%8F%AF%E9%9D%A0%E5%9F%BA%E5%87%86"><span class="toc-text">人工提取：构建可靠基准</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%EF%BC%9A%E8%BE%93%E5%87%BA%E6%95%B4%E7%90%86%E4%B8%8E%E5%81%8F%E5%B7%AE%E5%88%86%E6%9E%90"><span class="toc-text">模型评估：输出整理与偏差分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82%E5%AE%8C%E6%95%B4%E6%80%A7%E6%A0%A1%E9%AA%8C%E6%96%B9%E6%B3%95"><span class="toc-text">需求完整性校验方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#E-R-%E5%9B%BE"><span class="toc-text">E-R 图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CRUD-%E7%9F%A9%E9%98%B5"><span class="toc-text">CRUD 矩阵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E7%B1%BB%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="toc-text">五类关注点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%94%E7%A9%B6%E6%84%8F%E4%B9%89"><span class="toc-text">研究意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%94%B6%E8%8E%B7%E4%B8%8E%E6%80%9D%E8%80%83"><span class="toc-text">个人收获与思考</span></a></li></ol>
+  </div>
+</aside>
+
+      
+  </div>
+
+  <footer class="post-footer">
+    
+      <div class="post-tags">
+        
+          <a href="/my-webside/tags/%E9%9C%80%E6%B1%82%E5%B7%A5%E7%A8%8B/">#需求工程</a>
+        
+          <a href="/my-webside/tags/%E6%95%B0%E6%8D%AE%E9%9B%86/">#数据集</a>
+        
+          <a href="/my-webside/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">#大模型</a>
+        
+          <a href="/my-webside/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/">#软件工程</a>
+        
+      </div>
+    
+    <nav class="post-nav">
+      
+        <a class="prev" href="/my-webside/2026/05/14/%E5%8F%A4%E8%AF%97%E5%8A%A9%E5%AD%A6%E7%BD%91%E7%AB%99/">&laquo; 古诗助学网站</a>
+      
+      
+        <a class="next" href="/my-webside/2026/05/14/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%AE%89%E5%85%A8%E5%AF%B9%E9%BD%90%E7%A0%94%E7%A9%B6/">大模型安全对齐研究 &raquo;</a>
+      
+    </nav>
+  </footer>
+</article>
+
+    </main>
+    <footer class="site-footer">
+  <div class="footer-inner">
+    
+      <p>&copy; 2026 LionFish</p>
+    
+  </div>
+</footer>
+
+  </div>
+  
+<script src="/my-webside/js/main.js"></script>
+
+</body>
+</html>

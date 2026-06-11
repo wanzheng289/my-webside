@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta name="robots" content="noindex, nofollow">
+  <title>基于Agent Workflow的RAG图书语义推荐系统 | LionFish</title>
+  <meta name="description" content="项目概述这是一个围绕“自然语言阅读需求”构建的 Agent 化 RAG 图书语义推荐系统。用户不需要输入精确的书名或作者，只需要描述自己的阅读心境、主题偏好或想解决的问题，例如“想读一本关于成长和自我反思的书”，系统就会从本地图书数据和向量索引中检索出语义相关的候选书籍，并返回带有推荐分数、图书元信息和简介摘要的 Top-K 推荐结果。 我在这个项目中完成了从数据处理、向量库构建、RAG 检索链路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Agent Workflow的RAG图书语义推荐系统">
+<meta property="og:url" content="https://wanzheng289.github.io/my-webside/2026/06/11/book-recommender/index.html">
+<meta property="og:site_name" content="LionFish">
+<meta property="og:description" content="项目概述这是一个围绕“自然语言阅读需求”构建的 Agent 化 RAG 图书语义推荐系统。用户不需要输入精确的书名或作者，只需要描述自己的阅读心境、主题偏好或想解决的问题，例如“想读一本关于成长和自我反思的书”，系统就会从本地图书数据和向量索引中检索出语义相关的候选书籍，并返回带有推荐分数、图书元信息和简介摘要的 Top-K 推荐结果。 我在这个项目中完成了从数据处理、向量库构建、RAG 检索链路">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/book/%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2.png">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/book/%E6%9F%A5%E8%AF%A2%E5%90%8E1.png">
+<meta property="og:image" content="https://wanzheng289.github.io/my-webside/images/projects/book/%E6%9F%A5%E8%AF%A2%E5%90%8E2.png">
+<meta property="article:published_time" content="2026-06-11T05:50:40.000Z">
+<meta property="article:modified_time" content="2026-06-11T07:17:44.026Z">
+<meta property="article:author" content="LionFish">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Chroma">
+<meta property="article:tag" content="Gradio">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="LangChain">
+<meta property="article:tag" content="RAG">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wanzheng289.github.io/my-webside/images/projects/book/%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2.png">
+  <link rel="icon" href="/my-webside/images/logo.svg">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-regular/result.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-gb-web@latest/lxgwwenkaigb-medium/result.css">
+  
+<link rel="stylesheet" href="/my-webside/css/style.css">
+
+  <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <div class="site-wrapper">
+    <div class="reading-progress" aria-hidden="true"></div>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-title" href="/my-webside/"><img class="site-logo" src="/my-webside/images/logo.svg" alt="Logo">LionFish</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="nav-toggle-icon"></span>
+    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/my-webside/">首页</a>
+      
+        <a class="nav-link" href="/my-webside/categories/profile/">个人信息</a>
+      
+        <a class="nav-link" href="/my-webside/categories/projects/">项目经历</a>
+      
+        <a class="nav-link" href="/my-webside/categories/research/">科研经历</a>
+      
+    </nav>
+    <button class="theme-toggle" aria-label="切换深色模式" title="切换深色模式">
+      <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+  </div>
+</header>
+
+    <main class="main-content">
+      <article class="post">
+  
+  <header class="post-header">
+    <p class="post-kicker">Project Dossier</p>
+    <h1 class="post-title">基于Agent Workflow的RAG图书语义推荐系统</h1>
+    <div class="post-meta post-meta-row">
+      <span class="post-meta-chip"><time datetime="2026-06-11T05:50:40.000Z">2026-06-11</time></span>
+      
+        
+          <a class="post-meta-chip" href="/my-webside/categories/projects/">projects</a>
+        
+      
+      
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/LLM/">#LLM</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/RAG/">#RAG</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/Agent/">#Agent</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/LangChain/">#LangChain</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/Chroma/">#Chroma</a>
+        
+          <a class="post-meta-chip subtle" href="/my-webside/tags/Gradio/">#Gradio</a>
+        
+      
+    </div>
+  </header>
+
+  <div class="post-body-wrapper">
+    <div class="post-paper">
+      <div class="post-content">
+        <h2 id="项目概述"><a href="#项目概述" class="headerlink" title="项目概述"></a>项目概述</h2><p>这是一个围绕“自然语言阅读需求”构建的 Agent 化 RAG 图书语义推荐系统。用户不需要输入精确的书名或作者，只需要描述自己的阅读心境、主题偏好或想解决的问题，例如“想读一本关于成长和自我反思的书”，系统就会从本地图书数据和向量索引中检索出语义相关的候选书籍，并返回带有推荐分数、图书元信息和简介摘要的 Top-K 推荐结果。</p>
+<p>我在这个项目中完成了从数据处理、向量库构建、RAG 检索链路、Agent Workflow 编排到 Gradio 前端展示的完整开发流程。项目最初来自一个 notebook 形式的语义推荐实验，后来被整理为可运行、可复现、可测试的 Python 项目结构，并进一步加入混合检索、元数据过滤、重排和可解释推荐等能力，使它从“能检索相似文本”的原型，逐步演化为一个更接近真实 AI 应用的端到端系统。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/book/初始页面.png" alt="图书语义推荐系统初始页面" style="max-width: 100%;">
+  <p class="media-caption">系统初始页面：输入自然语言阅读需求，并选择类别与情绪偏好</p>
+</div>
+
+<h2 id="为什么做这个项目"><a href="#为什么做这个项目" class="headerlink" title="为什么做这个项目"></a>为什么做这个项目</h2><p>传统的图书推荐通常依赖类别、评分、热门榜单或用户历史行为，但这类方式很难理解用户临时产生的、较模糊的阅读需求。例如用户可能并不知道自己想读哪一类书，只是想寻找“适合低落时阅读的治愈类作品”或“关于女性成长、家庭关系和身份认同的小说”。这类需求更接近自然语言语义理解问题，而不是简单的关键词匹配。</p>
+<p>因此，我希望通过 RAG 和 Agent Workflow 的方式，把用户的自然语言需求拆解成多个可解释步骤：先理解用户意图，再进行候选召回，然后基于类别和情绪标签过滤，最后综合多个信号重排结果。相比单纯调用向量检索，这种方式更容易调试，也更容易解释推荐结果为什么出现。</p>
+<h2 id="核心能力"><a href="#核心能力" class="headerlink" title="核心能力"></a>核心能力</h2><p>项目后端围绕一个 Agent Workflow 组织。用户输入 query 后，系统会依次经过需求理解、候选检索、条件过滤、结果重排和推荐解释几个阶段。每个阶段都被封装为独立模块，便于单独测试和后续扩展。</p>
+<p>在需求理解阶段，系统会对用户输入进行简单的 Query Analysis，提取关键词、识别类别和情绪偏好，并生成用于检索的 rewritten query。这个步骤的目标不是做复杂的多轮规划，而是把模糊的自然语言需求转换成后续检索模块更容易处理的结构化信息。</p>
+<p>在检索阶段，项目采用 Hybrid Retrieval，也就是同时使用向量检索和关键词检索。向量检索负责捕捉语义相似性，能够找到与用户表达“意思接近”的书籍；关键词检索则补充更直接的词面匹配，避免纯向量检索遗漏包含关键主题词的候选结果。两路结果会基于 ISBN 合并，形成统一的候选集。</p>
+<p>在过滤和重排阶段，系统会结合图书类别、情绪标签、向量分数、关键词分数和情绪匹配分数，对候选书籍进行筛选与排序。最终的 RAG score 不是单一相似度，而是多个检索和偏好信号的融合结果。这样做的好处是，推荐结果既能保持语义相关性，也能更贴合用户选择的类别和情绪倾向。</p>
+<p>在解释阶段，系统会为最终结果补充可解释推荐信息，包括 ISBN、作者、年份、类别、简介摘要和 RAG 分数。前端还会展示 Agent Trace，让用户能够看到系统每一步处理了多少候选书籍，以及最终是如何得到推荐列表的。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/book/查询后1.png" alt="图书推荐查询结果与 Agent Trace" style="max-width: 100%;">
+  <p class="media-caption">查询后页面：推荐卡片与 Agent Trace 同屏展示，便于观察检索和重排过程</p>
+</div>
+
+<h2 id="技术实现"><a href="#技术实现" class="headerlink" title="技术实现"></a>技术实现</h2><p>项目主要使用 Python 开发，后端逻辑封装在 <code>src/book_recommender</code> 包中。<code>agent.py</code> 负责组织 Agent Workflow，<code>query.py</code> 负责需求分析和关键词抽取，<code>keyword_search.py</code> 负责关键词召回，<code>vector_store.py</code> 负责加载 Chroma 向量库，<code>reranker.py</code> 负责元数据过滤和融合重排，<code>explainer.py</code> 负责生成推荐解释字段，<code>recommender.py</code> 则作为面向 UI 的业务封装层。</p>
+<p>向量检索部分使用 Chroma 作为本地向量数据库。项目会基于图书简介构建 <code>tagged_description.txt</code>，再将其切分并写入 Chroma 持久化索引。为了降低外部 API 依赖，项目支持多种 embedding 配置，包括 OpenAI-compatible embedding 服务、GLM embedding，以及用于本地开发的 fallback embedding。实际运行时可以通过 <code>.env</code> 配置不同的 embedding provider。</p>
+<p>数据处理流程最初在 notebooks 中完成，包括数据清洗、类别标注、向量库构建和情绪分析。为了让项目更接近工程实践，我将实验流程进一步整理为 scripts 和 src 模块，使数据处理、索引构建、应用启动和测试逻辑相互分离。这样既保留了 notebook 的探索过程，也让最终应用更容易复现。</p>
+<p>前端使用 Gradio 构建交互式 Demo。用户可以输入阅读需求，并选择图书类别和情绪偏好，系统返回推荐卡片和 Agent Trace。UI 采用一种 archive &#x2F; topographic matcher 风格，既展示推荐结果，也通过视觉方式强化“从语义空间中寻找匹配书籍”的产品感。</p>
+<div class="media-visual">
+  <video controls style="max-width: 100%;">
+    <source src="/my-webside/images/projects/book/完整演示视频.mp4" type="video/mp4">
+    您的浏览器不支持视频播放。
+  </video>
+  <p class="media-caption">完整交互演示：从输入阅读需求到生成推荐结果和执行轨迹</p>
+</div>
+
+<h2 id="Agent-Workflow-设计"><a href="#Agent-Workflow-设计" class="headerlink" title="Agent Workflow 设计"></a>Agent Workflow 设计</h2><p>这个项目中的 Agent 并不是一个黑盒式的大模型代理，而是一个由多个工具步骤串联起来的确定性工作流。这样的设计更适合推荐系统场景，因为每个步骤都可以被观察、调试和替换。</p>
+<p>整体流程如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用户阅读需求</span><br><span class="line">  ↓</span><br><span class="line">需求理解：分析 query、提取关键词、识别类别和情绪偏好</span><br><span class="line">  ↓</span><br><span class="line">候选检索：执行向量检索和关键词检索</span><br><span class="line">  ↓</span><br><span class="line">条件过滤：根据类别和情绪标签筛选候选书籍</span><br><span class="line">  ↓</span><br><span class="line">结果重排：融合 vector_score、keyword_score 和 tone_score</span><br><span class="line">  ↓</span><br><span class="line">推荐解释：补充推荐依据和图书元信息</span><br><span class="line">  ↓</span><br><span class="line">前端展示：返回推荐卡片和 Agent Trace</span><br></pre></td></tr></table></figure>
+
+<p>这种拆分方式让我在开发过程中可以清楚地知道问题出在哪一层：如果召回不足，可以调向量检索或关键词检索；如果结果不符合用户筛选条件，可以检查 metadata filter；如果排序不理想，可以调整 rerank 权重；如果用户看不懂推荐原因，则可以优化 explanation 输出。</p>
+<h2 id="RAG-检索链路"><a href="#RAG-检索链路" class="headerlink" title="RAG 检索链路"></a>RAG 检索链路</h2><p>项目中的 RAG 更偏向检索增强推荐，而不是问答生成。系统不会凭空生成书单，而是在本地图书数据和 Chroma 向量库中查找已有书籍，再把检索结果组织为可解释推荐卡片。</p>
+<p>向量检索负责根据用户 query 在语义空间中寻找相似简介，关键词检索负责从标题、简介等字段中召回包含关键主题词的图书。两路结果合并后，系统会保留每本书的 <code>vector_score</code>、<code>keyword_score</code> 和 <code>keyword_matches</code>，为后续重排提供依据。</p>
+<p>相比只使用向量检索，Hybrid Retrieval 的优势在于召回更加稳定。很多用户需求中会包含明确主题词，例如“成长”“家庭”“悬疑”“历史”等，如果完全依赖 embedding，相似度可能会受到表述方式影响；而关键词检索可以补充这些显式信号。相反，如果用户表达比较抽象，例如“低谷时期的自我修复”，向量检索又能比关键词匹配更好地理解语义。因此两者结合更适合开放式推荐场景。</p>
+<div class="media-visual">
+  <img src="/my-webside/images/projects/book/查询后2.png" alt="图书语义推荐系统另一组查询结果" style="max-width: 100%;">
+  <p class="media-caption">另一组查询结果：不同自然语言需求下，系统返回语义相关的 Top-K 推荐</p>
+</div>
+
+<h2 id="工程化整理"><a href="#工程化整理" class="headerlink" title="工程化整理"></a>工程化整理</h2><p>在项目后期，我重点做了工程化整理。原始 notebook 中的实验逻辑被拆分为更清晰的模块，项目目录也被整理为常见的 Python 包结构：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">src/book_recommender/</span><br><span class="line">├── agent.py</span><br><span class="line">├── app.py</span><br><span class="line">├── config.py</span><br><span class="line">├── data.py</span><br><span class="line">├── embeddings.py</span><br><span class="line">├── explainer.py</span><br><span class="line">├── keyword_search.py</span><br><span class="line">├── query.py</span><br><span class="line">├── recommender.py</span><br><span class="line">├── reranker.py</span><br><span class="line">├── ui.py</span><br><span class="line">└── vector_store.py</span><br></pre></td></tr></table></figure>
+
+<p>同时，项目补充了 <code>README.md</code>、<code>.env.example</code>、<code>requirements.txt</code>、<code>pyproject.toml</code> 和基础测试文件。这样做的目标是让项目不只停留在“我本地能跑”，而是让别人 clone 后也能理解如何安装依赖、准备环境变量、使用已有数据和启动应用。</p>
+<p>测试部分覆盖了推荐器、Agent Workflow 和 RAG pipeline 的核心逻辑。虽然测试规模还不大，但已经能帮助发现流程拆分、候选合并、过滤重排等模块中的基础问题。</p>
+<h2 id="项目收获"><a href="#项目收获" class="headerlink" title="项目收获"></a>项目收获</h2><p>这个项目让我对 AI 应用开发有了更具体的理解：一个可展示的 Agent 应用不仅仅是调用一次大模型 API，更重要的是把业务流程拆成稳定、可观察、可迭代的步骤。尤其是在 RAG 场景中，检索质量、数据质量、重排策略和解释方式都会直接影响最终体验。</p>
+<p>我也意识到，Agent Workflow 的价值不一定体现在复杂的“自主规划”上。在很多实际业务场景中，一个清晰的、多步骤的、可调试的工作流就已经能解决很多问题。相比让模型完全自由发挥，把检索、过滤、排序和解释拆成明确模块，更容易控制结果质量，也更适合工程落地。</p>
+<p>此外，项目也让我完整经历了一次从 notebook 原型到工程项目的整理过程。数据处理、环境变量、依赖安装、目录结构、测试、README、GitHub 发布，这些看起来不是算法本身的部分，但它们决定了项目是否能被别人理解和运行。</p>
+<h2 id="后续优化方向"><a href="#后续优化方向" class="headerlink" title="后续优化方向"></a>后续优化方向</h2><p>如果继续迭代，我会优先补充推荐效果评估。当前项目已经有基本测试，但还缺少面向推荐质量的指标，例如 Recall@K、MRR、人工标注 query 集，以及向量检索、关键词检索和混合检索之间的对比实验。加入这些指标后，项目会更容易说明 RAG 链路优化是否真的带来了效果提升。</p>
+<p>第二个方向是增强 query analysis 和 explanation。当前的需求理解主要是规则和轻量文本处理，后续可以接入 LLM 做更细粒度的意图分析，例如识别用户希望阅读的主题、情绪、难度、篇幅和排雷条件。推荐解释也可以进一步从“元信息解释”升级为“基于简介证据的自然语言解释”。</p>
+<p>第三个方向是补充 API 服务层。目前项目使用 Gradio 作为主要交互界面，适合展示 Demo；如果要变成更标准的 AI 应用，可以增加 FastAPI 接口，将推荐能力封装为 <code>/recommend</code> 服务，方便未来接入其他前端或作为工具被其他 Agent 调用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个项目的核心价值在于，它把一个语义推荐任务拆解成了完整的 Agentic RAG 应用流程：用户用自然语言表达需求，系统通过需求理解、混合检索、元数据过滤、融合重排和可解释展示，返回可追踪的推荐结果。相比单纯的向量相似度 Demo，它更强调流程可观察、模块可替换和结果可解释，也更贴近真实 AI 应用开发中对 Agent Workflow、RAG 和工程落地能力的要求。</p>
+
+      </div>
+    </div>
+
+    
+        <aside class="toc-sidebar">
+  <div class="toc-wrapper">
+    <h3 class="toc-title">Contents</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0"><span class="toc-text">项目概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%81%9A%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE"><span class="toc-text">为什么做这个项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E8%83%BD%E5%8A%9B"><span class="toc-text">核心能力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0"><span class="toc-text">技术实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-Workflow-%E8%AE%BE%E8%AE%A1"><span class="toc-text">Agent Workflow 设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG-%E6%A3%80%E7%B4%A2%E9%93%BE%E8%B7%AF"><span class="toc-text">RAG 检索链路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E5%8C%96%E6%95%B4%E7%90%86"><span class="toc-text">工程化整理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%94%B6%E8%8E%B7"><span class="toc-text">项目收获</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91"><span class="toc-text">后续优化方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+  </div>
+</aside>
+
+      
+  </div>
+
+  <footer class="post-footer">
+    
+      <div class="post-tags">
+        
+          <a href="/my-webside/tags/LLM/">#LLM</a>
+        
+          <a href="/my-webside/tags/RAG/">#RAG</a>
+        
+          <a href="/my-webside/tags/Agent/">#Agent</a>
+        
+          <a href="/my-webside/tags/LangChain/">#LangChain</a>
+        
+          <a href="/my-webside/tags/Chroma/">#Chroma</a>
+        
+          <a href="/my-webside/tags/Gradio/">#Gradio</a>
+        
+      </div>
+    
+    <nav class="post-nav">
+      
+      
+        <a class="next" href="/my-webside/2026/06/11/%E4%BC%81%E4%B8%9Aagent/">基于 RAG 的企业客服运营 Multi-Tool Agent 平台 &raquo;</a>
+      
+    </nav>
+  </footer>
+</article>
+
+    </main>
+    <footer class="site-footer">
+  <div class="footer-inner">
+    
+      <p>&copy; 2026 LionFish</p>
+    
+  </div>
+</footer>
+
+  </div>
+  
+<script src="/my-webside/js/main.js"></script>
+
+</body>
+</html>
