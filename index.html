@@ -50,43 +50,1283 @@
 </header>
 
     <main class="main-content">
-      <div class="landing-page">
-  <section class="landing-section landing-hero" id="home">
-    <div class="landing-inner">
-      <p class="landing-eyebrow">PERSONAL INFO</p>
-      <h1 class="landing-title">LionFish</h1>
-      <p class="landing-subtitle">ECNU|SEI|人工智能系统开发与分析方向</p>
-      <div class="hero-facts">
-        <article class="fact-card"><span>学校</span><strong>ECNU</strong><p>2024.09 - 2028.06</p></article>
-        <article class="fact-card"><span>GPA</span><strong>3.44 / 4.0</strong><p>排名 71 / 222</p></article>
-        <article class="fact-card"><span>邮箱</span><strong><a href="mailto:sszzyy_2829289wmgl@126.com">sszzyy_2829289wmgl@126.com</a></strong></article>
-        <article class="fact-card"><span>GitHub</span><strong><a href="https://github.com/wanzheng289" target="_blank" rel="noopener">wanzheng289</a></strong></article>
-      </div>
-      <div class="intro-card">
-        <p><strong>核心课程：</strong>数据结构与算法、操作系统、计算机网络、最优化方法、算法设计与分析、离散数学、数据库系统与应用</p>
-      </div>
+      
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+
+        * {
+            user-select: none;
+            -webkit-user-select: none;
+            box-sizing: border-box;
+            /* Disable font anti-aliasing to preserve crisp pixel font edges */
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: unset;
+            font-smooth: never;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #0d0e12;
+            font-family: 'Press Start 2P', 'Zpix', 'DotGothic16', 'VT323', monospace, sans-serif;
+            color: #ffffff;
+            image-rendering: pixelated;
+        }
+
+        /* Minecraft Styled UI Elements */
+        .mc-border {
+            border: 4px solid #000000;
+            outline: 4px solid #373737;
+            background: #c6c6c6;
+            box-shadow: inset -4px -4px #555555, inset 4px 4px #ffffff;
+        }
+
+        .mc-dark-container {
+            background-color: #212121;
+            box-shadow: inset 3px 3px #000000, inset -3px -3px #3c3c3c;
+            border: 2px solid #3c3c3c;
+        }
+
+        .mc-button {
+            background-color: #707070;
+            border: 3px solid #000000;
+            box-shadow: inset -3px -3px #373737, inset 3px 3px #ffffff;
+            color: #e0e0e0;
+            text-shadow: 2px 2px #000000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+        }
+
+        .mc-button:hover {
+            background-color: #8b8b8b;
+            color: #ffffa0;
+        }
+
+        .mc-button:active {
+            box-shadow: inset 3px 3px #373737, inset -3px -3px #ffffff;
+            transform: translateY(2px);
+        }
+
+        .mc-tooltip {
+            background-color: rgba(16, 0, 16, 0.92);
+            border: 3px solid #280064;
+            box-shadow: inset -2px -2px #100028, inset 2px 2px #280064;
+            color: #ffffff;
+            font-family: 'Zpix', 'DotGothic16', 'Press Start 2P', monospace;
+            text-shadow: 2px 2px #000000;
+            pointer-events: none;
+        }
+
+        .mc-link {
+            color: #facc15;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .mc-chip {
+            background: #1f2937;
+            border: 1px solid #4b5563;
+            color: #86efac;
+            padding: 2px 8px;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        /* Hotbar Active Slot Glow */
+        .hotbar-slot.active {
+            border-color: #ffffff !important;
+            box-shadow: inset 0 0 10px #ffffaa, 0 0 8px #ffffff;
+        }
+
+        /* Custom Scrollbar for Minecraft Modals */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+            border: 2px solid #3c3c3c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+            border: 2px solid #888;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+
+        /* CRT Pixel effect overlay on canvas */
+        #canvas-container::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+            background-size: 100% 4px;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+    
+body.minecraft-home-page .site-header,
+body.minecraft-home-page .site-footer { display: none; }
+body.minecraft-home-page .site-wrapper,
+body.minecraft-home-page .main-content { max-width: none; width: 100%; padding: 0; margin: 0; }
+body.minecraft-home-page .site-wrapper { min-height: 100vh; }
+body.minecraft-home-page .main-content { height: 100vh; overflow: hidden; }
+body.minecraft-home-page .mc-article-link { display: inline-flex; align-items: center; justify-content: center; margin-top: 0.65rem; width: 100%; }
+body.minecraft-home-page .mc-article-link[aria-disabled="true"] { opacity: 0.55; pointer-events: none; }
+@media (max-width: 640px) {
+  body.minecraft-home-page .mc-border { outline-width: 2px; border-width: 2px; }
+  body.minecraft-home-page #hotbar-slots { max-width: calc(100vw - 28px); overflow-x: auto; }
+}
+</style>
+<script>
+document.body.classList.add('minecraft-home-page');
+window.LIONFISH_ARTICLES = {
+  profile: "/my-webside/2026/05/14/%E6%95%99%E8%82%B2%E8%83%8C%E6%99%AF/",
+  researchRequirements: "/my-webside/2026/05/14/%E4%BB%8E%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E5%88%B0%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82%E6%95%B0%E6%8D%AE%E9%9B%86%E6%9E%84%E5%BB%BA/",
+  researchSafety: "/my-webside/2026/05/14/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%AE%89%E5%85%A8%E5%AF%B9%E9%BD%90%E7%A0%94%E7%A9%B6/",
+  projectFeynman: "/my-webside/2026/05/14/%E6%9C%AC%E7%A7%91%E7%94%9F%E5%88%9B%E6%96%B0%E5%88%9B%E4%B8%9A%E9%A1%B9%E7%9B%AE/",
+  projectPoemSite: "/my-webside/2026/05/14/%E5%8F%A4%E8%AF%97%E5%8A%A9%E5%AD%A6%E7%BD%91%E7%AB%99/",
+  projectPoemMini: "/my-webside/2026/05/15/%E5%8F%A4%E8%AF%97AI%E5%8A%A9%E5%AD%A6%E5%B0%8F%E7%A8%8B%E5%BA%8F/",
+  projectBook: "/my-webside/2026/06/11/book-recommender/",
+  projectEnterprise: "/my-webside/2026/06/11/%E4%BC%81%E4%B8%9Aagent/"
+};
+</script>
+
+
+    <!-- 3D Canvas Container -->
+    <div id="canvas-container" class="w-full h-full absolute inset-0 z-0"></div>
+
+    <!-- Top Bar HUD -->
+    <div class="absolute top-4 left-4 right-4 z-10 flex justify-between items-center pointer-events-none">
+        <div class="mc-border p-3 flex items-center gap-3 bg-gray-900/80 pointer-events-auto">
+            <span class="text-xs text-green-400 animate-pulse">● LVL 99</span>
+            <span class="text-sm text-yellow-300 font-bold">LionFish 的个人小屋</span>
+        </div>
+
+        <div class="flex gap-2 pointer-events-auto">
+            <button id="bgm-toggle" class="mc-button p-3 flex items-center gap-2 text-xs">
+                <i data-lucide="music" class="w-4 h-4"></i>
+                <span id="bgm-text">音乐: 关</span>
+            </button>
+            <button id="daynight-toggle" class="mc-button p-3 flex items-center gap-2 text-xs">
+                <i data-lucide="sun" class="w-4 h-4 text-yellow-400"></i>
+                <span id="daynight-text">白天</span>
+            </button>
+            <button id="reset-cam-btn" class="mc-button p-3 text-xs" title="重置视角">
+                <i data-lucide="compass" class="w-4 h-4"></i>
+            </button>
+        </div>
     </div>
-  </section>
-  <section class="landing-section" id="research-overview">
-    <div class="landing-inner">
-      <div class="section-heading"><p class="landing-eyebrow">RESEARCH</p><h2>科研概览</h2></div>
-      <div class="card-grid">
-        <article class="info-card"><h3>大模型价值观对齐与安全性研究</h3><ul><li>深入理解并实践 RLHF、PPO、DPO、GRPO 等对齐算法。</li><li>研读 PAIR、DeepInception、Smooth-LLM 等攻防论文。</li><li>完成基线模型部署，并针对业务需求优化对齐策略。</li></ul></article>
-        <article class="info-card"><h3>协助构建“用户需求-功能需求”数据集</h3><ul><li>从软件说明书中人工提取用例描述。</li><li>分析各类大模型输出功能需求的准确率与幻觉率。</li><li>使用 E-R 图、CRUD 矩阵及五类关注点做完整性校验。</li></ul></article>
-      </div>
+
+    <!-- Custom Cursor Minecraft Tooltip -->
+    <div id="mc-tooltip" class="mc-tooltip fixed hidden z-50 p-2.5 text-xs rounded pointer-events-none max-w-xs shadow-2xl">
+        <div id="tooltip-title" class="text-yellow-300 font-bold mb-1">物品</div>
+        <div id="tooltip-desc" class="text-gray-300 text-[10px] leading-relaxed">点击进行交互</div>
     </div>
-  </section>
-  <section class="landing-section" id="projects-overview">
-    <div class="landing-inner">
-      <div class="section-heading"><p class="landing-eyebrow">PROJECTS</p><h2>项目概览</h2></div>
-      <div class="card-grid">
-        <article class="info-card"><h3>古诗AI+AR辅助教学小程序</h3><ul><li>独立完成基于 uni-app + Vue3 的全栈开发，适配小程序端。</li><li>共设计7个模块，覆盖“读、问、赏、练、创、玩、拓”的完整学习链条。</li><li>通过“可视化阅读+互动问答+游戏闯关+AI生成+AR体验”的方式，帮助学习者从字词理解、诗意赏析、情感体会、迁移应用等多个层面走近这首经典作品。</li></ul></article>
-        <article class="info-card"><h3>古诗助学网站</h3><ul><li>基于 uni-app + Vue3 构建助学网站。</li><li>覆盖导学案、知识拓展与思维导图三大模块。</li></ul></article>
-        <article class="info-card"><h3>本科生创新创业项目：抗幻觉翻转课堂 AI 伴学系统</h3><ul><li>将教育学理念与大模型融合，实现基于“费曼学习法”的人机角色翻转。</li><li>通过前置隐式诊断和双验证机制，避免模型阿谀奉承。</li><li>基于工作流编排和规划机制，实现对话流的精准控制。</li><li>引入Harness范式。</li></ul></article>
-      </div>
+
+    <!-- Bottom Minecraft Hotbar -->
+    <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 z-10 pointer-events-auto">
+        <div class="mc-dark-container p-1.5 flex gap-1.5 rounded bg-black/70 backdrop-blur-sm border-4 border-gray-700">
+            <!-- Slots will be rendered dynamically -->
+            <div id="hotbar-slots" class="flex gap-1.5"></div>
+        </div>
     </div>
-  </section>
-</div>
+
+    <!-- Interaction Modal Overlay -->
+    <div id="mc-modal" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm flex items-center justify-center hidden p-4">
+        <div class="mc-border w-full max-w-2xl max-h-[85vh] flex flex-col p-6 relative animate-bounce-in">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center border-b-4 border-gray-700 pb-3 mb-4">
+                <div class="flex items-center gap-3">
+                    <div id="modal-icon-box" class="w-10 h-10 mc-dark-container flex items-center justify-center text-yellow-400">
+                        <i data-lucide="box" class="w-6 h-6"></i>
+                    </div>
+                    <h2 id="modal-title" class="text-base sm:text-lg text-yellow-300 font-bold drop-shadow">标题</h2>
+                </div>
+                <button id="modal-close" class="mc-button px-3 py-1 text-sm font-bold hover:text-red-400">X</button>
+            </div>
+
+            <!-- Modal Content Area -->
+            <div id="modal-body" class="mc-dark-container p-4 overflow-y-auto flex-1 text-xs sm:text-sm leading-relaxed text-gray-200">
+                <!-- Dynamic Content Loaded Here -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="mt-4 pt-3 border-t-2 border-gray-600 flex justify-end">
+                <button id="modal-ok-btn" class="mc-button px-6 py-2 text-xs">完成 [ESC]</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================
+           AUDIO SYNTHESIZER (8-BIT MINECRAFT SOUNDS)
+           ========================================== */
+        class RetroAudio {
+            constructor() {
+                this.ctx = null;
+                this.bgmPlaying = false;
+                this.bgmInterval = null;
+                this.noteIdx = 0;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            playClick() {
+                this.init();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.08);
+            }
+
+            playChestOpen() {
+                this.init();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(320, now + 0.2);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(now + 0.25);
+            }
+
+            playNote(freq, duration = 0.15) {
+                this.init();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(now + duration);
+            }
+
+            toggleBGM(callback) {
+                this.init();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                this.bgmPlaying = !this.bgmPlaying;
+
+                if (this.bgmPlaying) {
+                    // C-major Minecraft style peaceful loop
+                    const notes = [
+                        261.63, 329.63, 392.00, 523.25, 392.00, 329.63,
+                        293.66, 349.23, 440.00, 587.33, 440.00, 349.23,
+                        220.00, 261.63, 329.63, 440.00, 329.63, 261.63,
+                        196.00, 246.94, 293.66, 392.00, 293.66, 246.94
+                    ];
+                    this.bgmInterval = setInterval(() => {
+                        this.playNote(notes[this.noteIdx], 0.4);
+                        this.noteIdx = (this.noteIdx + 1) % notes.length;
+                    }, 400);
+                } else {
+                    clearInterval(this.bgmInterval);
+                }
+                if (callback) callback(this.bgmPlaying);
+            }
+        }
+
+        const audio = new RetroAudio();
+    </script>
+
+    <script>
+        /* ==========================================
+           PROCEDURAL 16x16 MINECRAFT TEXTURE GENERATOR
+           ========================================== */
+        function createPixelTexture(type) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 16;
+            canvas.height = 16;
+            const ctx = canvas.getContext('2d');
+
+            function fillPixel(x, y, color) {
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y, 1, 1);
+            }
+
+            // Fill canvas helper
+            function fillBase(color) {
+                ctx.fillStyle = color;
+                ctx.fillRect(0, 0, 16, 16);
+            }
+
+            // Add random noise for block texture feel
+            function addNoise(factor = 10) {
+                const imgData = ctx.getImageData(0, 0, 16, 16);
+                const d = imgData.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    const noise = (Math.random() - 0.5) * factor;
+                    d[i] = Math.min(255, Math.max(0, d[i] + noise));
+                    d[i+1] = Math.min(255, Math.max(0, d[i+1] + noise));
+                    d[i+2] = Math.min(255, Math.max(0, d[i+2] + noise));
+                }
+                ctx.putImageData(imgData, 0, 0);
+            }
+
+            if (type === 'oak_planks') {
+                fillBase('#a07142');
+                ctx.fillStyle = '#6b4522';
+                for (let y = 0; y < 16; y += 4) {
+                    ctx.fillRect(0, y, 16, 1);
+                }
+                addNoise(15);
+            } else if (type === 'oak_log_side') {
+                fillBase('#5c4326');
+                ctx.fillStyle = '#3a2712';
+                for (let x = 0; x < 16; x += 3) {
+                    ctx.fillRect(x, 0, 1, 16);
+                }
+                addNoise(12);
+            } else if (type === 'oak_log_top') {
+                fillBase('#9d7c4d');
+                ctx.strokeStyle = '#624929';
+                ctx.strokeRect(2, 2, 12, 12);
+                ctx.strokeRect(5, 5, 6, 6);
+                addNoise(10);
+            } else if (type === 'bookshelf') {
+                fillBase('#a07142');
+                // Shelf planks
+                ctx.fillStyle = '#513217';
+                ctx.fillRect(0, 0, 16, 2);
+                ctx.fillRect(0, 7, 16, 2);
+                ctx.fillRect(0, 14, 16, 2);
+                // Books
+                const colors = ['#a82e2e', '#2e6da8', '#2ea84b', '#a8a22e', '#802ea8', '#d67520'];
+                for (let x = 1; x < 15; x += 2) {
+                    ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                    ctx.fillRect(x, 2, 1, 5);
+                    ctx.fillRect(x, 9, 1, 5);
+                }
+            } else if (type === 'crafting_table_top') {
+                fillBase('#a07142');
+                ctx.fillStyle = '#36210d';
+                ctx.strokeRect(1, 1, 14, 14);
+                // Grid lines
+                ctx.fillRect(5, 1, 1, 14);
+                ctx.fillRect(10, 1, 1, 14);
+                ctx.fillRect(1, 5, 14, 1);
+                ctx.fillRect(1, 10, 14, 1);
+                addNoise(10);
+            } else if (type === 'jukebox_top') {
+                fillBase('#523720');
+                ctx.fillStyle = '#111111';
+                ctx.fillRect(5, 5, 6, 6);
+                ctx.fillStyle = '#4ae3e3'; // Diamond center inlay
+                ctx.fillRect(7, 7, 2, 2);
+            } else if (type === 'painting_pvz') {
+                // Purple Mushroom PVZ art tribute from image
+                fillBase('#211a2e');
+                ctx.fillStyle = '#8338ec'; // Mushroom head
+                ctx.beginPath();
+                ctx.arc(8, 7, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#ff007f'; // Spots
+                ctx.fillRect(6, 4, 2, 2);
+                ctx.fillRect(9, 7, 2, 2);
+                ctx.fillStyle = '#e2afff'; // Stem
+                ctx.fillRect(6, 10, 4, 4);
+                ctx.fillStyle = '#000000'; // Eyes
+                ctx.fillRect(7, 11, 1, 1);
+                ctx.fillRect(8, 11, 1, 1);
+            } else if (type === 'screen_code') {
+                fillBase('#181a1f');
+                ctx.fillStyle = '#61afef';
+                ctx.fillRect(2, 2, 6, 1);
+                ctx.fillStyle = '#98c379';
+                ctx.fillRect(9, 2, 5, 1);
+                ctx.fillStyle = '#e5c07b';
+                ctx.fillRect(3, 5, 8, 1);
+                ctx.fillRect(3, 8, 10, 1);
+                ctx.fillStyle = '#c678dd';
+                ctx.fillRect(2, 11, 4, 1);
+                ctx.fillStyle = '#abb2bf';
+                ctx.fillRect(7, 11, 7, 1);
+            } else if (type === 'wool_rug') {
+                fillBase('#9d3232');
+                ctx.strokeStyle = '#c94d4d';
+                ctx.strokeRect(1, 1, 14, 14);
+                addNoise(15);
+            } else if (type === 'stone_bricks') {
+                fillBase('#737373');
+                ctx.fillStyle = '#3a3a3a';
+                ctx.fillRect(0, 4, 16, 1);
+                ctx.fillRect(0, 9, 16, 1);
+                ctx.fillRect(0, 14, 16, 1);
+                ctx.fillRect(8, 0, 1, 4);
+                ctx.fillRect(4, 5, 1, 4);
+                ctx.fillRect(12, 5, 1, 4);
+                ctx.fillRect(8, 10, 1, 4);
+                addNoise(15);
+            } else if (type === 'chest_front') {
+                fillBase('#a07142');
+                ctx.fillStyle = '#2b1b0e';
+                ctx.strokeRect(0, 0, 16, 16);
+                ctx.fillRect(0, 6, 16, 2); // Split line
+                ctx.fillStyle = '#d4af37'; // Lock
+                ctx.fillRect(7, 5, 2, 3);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(7.5, 6, 1, 1);
+            } else {
+                fillBase('#888888');
+                addNoise(20);
+            }
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.magFilter = THREE.NearestFilter;
+            texture.minFilter = THREE.NearestFilter;
+            return texture;
+        }
+
+        // Pre-create textures map
+        const textures = {
+            oak: createPixelTexture('oak_planks'),
+            logSide: createPixelTexture('oak_log_side'),
+            logTop: createPixelTexture('oak_log_top'),
+            bookshelf: createPixelTexture('bookshelf'),
+            craftingTop: createPixelTexture('crafting_table_top'),
+            jukeboxTop: createPixelTexture('jukebox_top'),
+            paintingPvz: createPixelTexture('painting_pvz'),
+            screenCode: createPixelTexture('screen_code'),
+            rug: createPixelTexture('wool_rug'),
+            stoneBricks: createPixelTexture('stone_bricks'),
+            chestFront: createPixelTexture('chest_front')
+        };
+    </script>
+
+    <script>
+        /* ==========================================
+           3D SCENE & INTERACTIVE ROOM INITIALIZATION
+           ========================================== */
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#0d1117');
+
+        // Camera setup (Isometric perspective)
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const defaultCamPos = new THREE.Vector3(14, 12, 14);
+        camera.position.copy(defaultCamPos);
+
+        // Renderer Setup
+        const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // Orbit Controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.target.set(0, 2, 0);
+        controls.maxPolarAngle = Math.PI / 2 - 0.05; // Don't go below floor
+        controls.minDistance = 6;
+        controls.maxDistance = 30;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xfffaed, 0.8);
+        dirLight.position.set(12, 20, 10);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.width = 1024;
+        dirLight.shadow.mapSize.height = 1024;
+        dirLight.shadow.camera.near = 0.5;
+        dirLight.shadow.camera.far = 40;
+        const d = 10;
+        dirLight.shadow.camera.left = -d;
+        dirLight.shadow.camera.right = d;
+        dirLight.shadow.camera.top = d;
+        dirLight.shadow.camera.bottom = -d;
+        scene.add(dirLight);
+
+        // Point Light for Desk Lamp
+        const deskLampLight = new THREE.PointLight(0xffaa33, 1.2, 8);
+        deskLampLight.position.set(-1.2, 3.8, 0);
+        deskLampLight.castShadow = true;
+        scene.add(deskLampLight);
+
+        // Interactive Objects Array
+        const interactiveObjects = [];
+
+        // Helper to register interactive voxels
+        function registerInteractive(mesh, name, desc, icon, category, modalData) {
+            mesh.userData = {
+                interactive: true,
+                name: name,
+                desc: desc,
+                icon: icon,
+                category: category,
+                modalData: modalData,
+                originalScale: mesh.scale.clone()
+            };
+            interactiveObjects.push(mesh);
+        }
+    </script>
+
+    <script>
+        /* ==========================================
+           VOXEL ROOM BUILDER
+           ========================================== */
+        
+        // Materials
+        const woodMat = new THREE.MeshStandardMaterial({ map: textures.oak, roughness: 0.8 });
+        const logMat = new THREE.MeshStandardMaterial({ map: textures.logSide, roughness: 0.8 });
+        const stoneMat = new THREE.MeshStandardMaterial({ map: textures.stoneBricks, roughness: 0.9 });
+        const rugMat = new THREE.MeshStandardMaterial({ map: textures.rug, roughness: 0.9 });
+        
+        // 1. FLOOR & WALLS
+        const roomGroup = new THREE.Group();
+        scene.add(roomGroup);
+
+        // Floor (Stone bricks grid)
+        const floorGeo = new THREE.BoxGeometry(12, 0.5, 12);
+        const floor = new THREE.Mesh(floorGeo, stoneMat);
+        floor.position.set(0, -0.25, 0);
+        floor.receiveShadow = true;
+        roomGroup.add(floor);
+
+        // Back Wall (Left)
+        const wallMat = new THREE.MeshStandardMaterial({ color: 0x2d3238, roughness: 0.9 });
+        const wallLeftGeo = new THREE.BoxGeometry(0.5, 8, 12);
+        const wallLeft = new THREE.Mesh(wallLeftGeo, wallMat);
+        wallLeft.position.set(-6.25, 3.75, 0);
+        wallLeft.receiveShadow = true;
+        roomGroup.add(wallLeft);
+
+        // Back Wall (Right)
+        const wallRightGeo = new THREE.BoxGeometry(12, 8, 0.5);
+        const wallRight = new THREE.Mesh(wallRightGeo, wallMat);
+        wallRight.position.set(0, 3.75, -6.25);
+        wallRight.receiveShadow = true;
+        roomGroup.add(wallRight);
+
+        // Rug on floor
+        const rugGeo = new THREE.BoxGeometry(6, 0.05, 5);
+        const rug = new THREE.Mesh(rugGeo, rugMat);
+        rug.position.set(0, 0.03, 1);
+        rug.receiveShadow = true;
+        roomGroup.add(rug);
+
+        // --- 2. WORK DESK & LAPTOP (Interactive: Crafting Station/Projects) ---
+        const deskGroup = new THREE.Group();
+        
+        // Table top
+        const deskTopGeo = new THREE.BoxGeometry(5, 0.3, 2.5);
+        const deskTop = new THREE.Mesh(deskTopGeo, woodMat);
+        deskTop.position.set(0, 2.2, 0);
+        deskTop.castShadow = true;
+        deskTop.receiveShadow = true;
+        deskGroup.add(deskTop);
+
+        // Desk Legs
+        const legGeo = new THREE.BoxGeometry(0.3, 2.2, 0.3);
+        const legPositions = [
+            [-2.2, 1.1, -1], [2.2, 1.1, -1],
+            [-2.2, 1.1, 1], [2.2, 1.1, 1]
+        ];
+        legPositions.forEach(pos => {
+            const leg = new THREE.Mesh(legGeo, logMat);
+            leg.position.set(...pos);
+            leg.castShadow = true;
+            deskGroup.add(leg);
+        });
+
+        // Voxel Laptop
+        const laptopMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.5 });
+        const laptopBaseGeo = new THREE.BoxGeometry(1.2, 0.08, 0.9);
+        const laptopBase = new THREE.Mesh(laptopBaseGeo, laptopMat);
+        laptopBase.position.set(-0.5, 2.39, 0);
+        laptopBase.castShadow = true;
+        deskGroup.add(laptopBase);
+
+        // Screen mesh with code texture
+        const screenMat = new THREE.MeshStandardMaterial({ map: textures.screenCode, roughness: 0.3 });
+        const laptopScreenGeo = new THREE.BoxGeometry(1.2, 0.8, 0.08);
+        const laptopScreen = new THREE.Mesh(laptopScreenGeo, screenMat);
+        laptopScreen.position.set(-0.5, 2.8, -0.42);
+        laptopScreen.rotation.x = -0.2;
+        laptopScreen.castShadow = true;
+        deskGroup.add(laptopScreen);
+
+        deskGroup.position.set(-1, 0, -3.5);
+        roomGroup.add(deskGroup);
+
+        // Register Laptop / Desk as Interactive
+        registerInteractive(
+            laptopBase,
+            "电脑工作台",
+            "查看 AI 应用项目与技术栈",
+            "code",
+            "projects",
+            {
+                type: "projects",
+                title: "💻 LionFish 的开发工作站",
+                intro: "我的项目：",
+                items: [
+                    {
+                        name: "FeynmanAgent：让孩子教 AI",
+                        meta: "project-01 · 本科生创新创业项目",
+                        url: window.LIONFISH_ARTICLES.projectFeynman,
+                        desc: "面向小学英语学习的教育 Agent 架构：孩子扮演老师，AI 扮演带有认知盲区的学生，用 RAG、双模型诊断和 LangGraph 状态机降低顺从性幻觉。",
+                        tags: ["LLM", "LangGraph", "RAG", "教育技术", "Agent"],
+                        detail: ["双模型隔离：诊断模型先校验，生成模型再回应", "Harness 中间件管线：安全、记忆、RAG、诊断解耦", "计划从立项答辩推进到后端核心架构和小规模内测"]
+                    },
+                    {
+                        name: "Deedly CloudOps Multi-Tool Agent",
+                        meta: "project-05 · 企业客服运营平台",
+                        url: window.LIONFISH_ARTICLES.projectEnterprise,
+                        desc: "把企业客服问题拆成客户画像、历史工单、知识库 RAG、知识图谱和评测链路的可观测 Agent 工作流。",
+                        tags: ["Python", "FastAPI", "RAG", "LangGraph", "MCP", "Neo4j", "Milvus"],
+                        detail: ["目标不是聊天 Demo，而是企业客服/运营工作台", "强调证据来源、工具调用轨迹和可迁移业务建模", "覆盖客服回复、工单定位、知识查询等场景"]
+                    },
+                    {
+                        name: "RAG 图书语义推荐系统",
+                        meta: "project-04 · Agent Workflow 推荐系统",
+                        url: window.LIONFISH_ARTICLES.projectBook,
+                        desc: "用户用自然语言描述阅读心境或问题，系统通过需求理解、混合检索、过滤重排和解释模块返回 Top-K 图书推荐。",
+                        tags: ["LLM", "RAG", "LangChain", "Chroma", "Gradio"],
+                        detail: ["从 notebook 原型整理为可复现 Python 项目", "融合向量检索、关键词检索、类别和情绪偏好", "前端展示推荐卡片与 Agent Trace"]
+                    },
+                    {
+                        name: "古诗 AI 助学小程序 / 古诗助学网站",
+                        meta: "project-02 / project-03 · AI 教育应用",
+                        url: window.LIONFISH_ARTICLES.projectPoemMini,
+                        secondaryUrl: window.LIONFISH_ARTICLES.projectPoemSite,
+                        secondaryLabel: "查看网站文章",
+                        desc: "围绕古诗词学习流程设计导学、拓展、复习与 AI 辅助模块，用网页/小程序把教学内容组织成可交互路径。",
+                        tags: ["教育技术", "AI 助学", "前端交互", "内容设计"],
+                        detail: ["聚焦《白雪歌送武判官归京》等具体教学场景", "覆盖预习、拓展、复习路径", "兼顾古典视觉风格与课堂使用效率"]
+                    }
+                ]
+            }
+        );
+
+        // --- 3. WHITEBOARD / NOTICE SIGNBOARD (Interactive: Bio & Welcome) ---
+        const boardFrameGeo = new THREE.BoxGeometry(4.5, 2.8, 0.15);
+        const boardFrameMat = new THREE.MeshStandardMaterial({ map: textures.oak });
+        const boardFrame = new THREE.Mesh(boardFrameGeo, boardFrameMat);
+        
+        // Inner Canvas / Canvas Texture for Sign Notice
+        const boardCanvas = document.createElement('canvas');
+        boardCanvas.width = 512; boardCanvas.height = 320;
+        const bCtx = boardCanvas.getContext('2d');
+        const boardTex = new THREE.CanvasTexture(boardCanvas);
+
+        function drawBoardTexture() {
+            bCtx.fillStyle = '#f4ecd8'; // Parchment color
+            bCtx.fillRect(0, 0, 512, 320);
+            bCtx.strokeStyle = '#5c4326'; bCtx.lineWidth = 12;
+            bCtx.strokeRect(0, 0, 512, 320);
+            bCtx.fillStyle = '#111'; bCtx.font = '24px "Zpix", "DotGothic16", sans-serif';
+            bCtx.fillText("欢迎来到", 40, 60);
+            bCtx.fillStyle = '#b32424';
+            bCtx.fillText("AI 工程小屋!", 40, 105);
+            bCtx.fillStyle = '#333'; bCtx.font = '16px "Zpix", "DotGothic16", sans-serif';
+            bCtx.fillText("- RAG / Agent / 教育 AI", 40, 160);
+            bCtx.fillText("- 需求工程与大模型安全", 40, 195);
+            bCtx.fillText("- 点击物件翻看作品", 40, 230);
+            bCtx.fillText("保持好奇，继续建造!", 40, 275);
+            boardTex.needsUpdate = true;
+        }
+
+        drawBoardTexture();
+        if (document.fonts) {
+            document.fonts.ready.then(() => {
+                drawBoardTexture();
+            });
+        }
+
+        const boardInnerMat = new THREE.MeshBasicMaterial({ map: boardTex });
+        const boardInnerGeo = new THREE.BoxGeometry(4.2, 2.5, 0.18);
+        const boardInner = new THREE.Mesh(boardInnerGeo, boardInnerMat);
+        boardFrame.add(boardInner);
+
+        boardFrame.position.set(-3.5, 5.2, -6.1);
+        roomGroup.add(boardFrame);
+
+        registerInteractive(
+            boardFrame,
+            "告示板",
+            "阅读个人介绍与教育背景",
+            "file-text",
+            "about",
+            {
+                type: "about",
+                title: "📜 冒险者日志 - 个人简介",
+                articleUrl: window.LIONFISH_ARTICLES.profile,
+                articleLabel: "阅读教育背景文章",
+                content: `
+                    <div class="space-y-3">
+                        <p class="text-yellow-300 font-bold">你好，世界！我是 LionFish。</p>
+                        <p>我正在软件工程、AI 教育应用与大模型相关研究之间积累自己的工具箱：一边做 RAG、Agent Workflow 和前后端项目，一边参与需求工程数据集构建与大模型安全对齐方向的科研实践。</p>
+                        <div class="p-3 mc-dark-container rounded border border-gray-700 my-2">
+                            <span class="text-green-400">课程基础：</span> 程序设计、计算机系统、操作系统、计算机网络、数据结构与算法、数据库、软件工程数学、最优化方法与人工智能数学思维。
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                            <div class="mc-dark-container p-2 border border-gray-700"><span class="text-yellow-300">研究</span><br>需求工程与大模型安全</div>
+                            <div class="mc-dark-container p-2 border border-gray-700"><span class="text-yellow-300">工程</span><br>RAG、Agent、FastAPI、LangGraph</div>
+                            <div class="mc-dark-container p-2 border border-gray-700"><span class="text-yellow-300">表达</span><br>Canva、剪辑、视觉叙事</div>
+                        </div>
+                        <p class="text-gray-400 text-xs">这个房间的每个物件都对应一类文章内容：电脑是项目，书架是研究，宝箱是履历与技能，挂画是兴趣与创作。</p>
+                    </div>
+                `
+            }
+        );
+
+        // --- 4. JUKEBOX & VINYL RECORD PLAYER (Interactive: Music Player) ---
+        const jukeboxGeo = new THREE.BoxGeometry(1.6, 1.8, 1.6);
+        const jukeboxSideMat = new THREE.MeshStandardMaterial({ map: textures.oak, roughness: 0.8 });
+        const jukeboxTopMat = new THREE.MeshStandardMaterial({ map: textures.jukeboxTop, roughness: 0.8 });
+        const jukeboxMats = [
+            jukeboxSideMat, jukeboxSideMat, jukeboxTopMat, jukeboxSideMat, jukeboxSideMat, jukeboxSideMat
+        ];
+        const jukebox = new THREE.Mesh(jukeboxGeo, jukeboxMats);
+        jukebox.position.set(-4.5, 0.9, 3.5);
+        jukebox.castShadow = true;
+        jukebox.receiveShadow = true;
+        roomGroup.add(jukebox);
+
+        registerInteractive(
+            jukebox,
+            "像素唱片机",
+            "播放 / 暂停 8-Bit 像素背景音乐",
+            "disc",
+            "music",
+            {
+                type: "music",
+                title: "🎵 唱片机音乐",
+                content: "点击下方按钮开关由 Web Audio API 实时合成的 8-Bit 像素风背景音乐！"
+            }
+        );
+
+        // --- 5. BOOKSHELF (Interactive: Reading & Notes) ---
+        const bookshelfGeo = new THREE.BoxGeometry(2.2, 3.2, 1.2);
+        const bookshelfMat = new THREE.MeshStandardMaterial({ map: textures.bookshelf, roughness: 0.8 });
+        const bookshelf = new THREE.Mesh(bookshelfGeo, bookshelfMat);
+        bookshelf.position.set(-5.3, 1.6, -1);
+        bookshelf.castShadow = true;
+        bookshelf.receiveShadow = true;
+        roomGroup.add(bookshelf);
+
+        registerInteractive(
+            bookshelf,
+            "附魔书架",
+            "查看需求工程与大模型安全研究",
+            "book-open",
+            "research",
+            {
+                type: "list",
+                title: "📚 研究书架",
+                intro: "这里放两篇科研与调研方向文章：",
+                items: [
+                    { title: "从用户需求到功能需求：数据集构建与模型评估", url: window.LIONFISH_ARTICLES.researchRequirements, desc: "从真实软件说明书中提取用户需求与用例描述，构建可用于评估大模型需求转换能力的数据集。", tags: ["需求工程", "数据集", "大模型", "软件工程"] },
+                    { title: "大模型安全对齐研究", url: window.LIONFISH_ARTICLES.researchSafety, desc: "围绕 RLHF、PPO、DPO、GRPO 与越狱攻防文献，整理大模型价值观对齐和安全实践脉络。", tags: ["大语言模型", "AI安全", "科研"] }
+                ]
+            }
+        );
+
+        // --- 6. LOOT CHEST (Interactive: Social Media & Links) ---
+        const chestGroup = new THREE.Group();
+        const chestGeo = new THREE.BoxGeometry(1.6, 1.2, 1.4);
+        const chestSideMat = new THREE.MeshStandardMaterial({ map: textures.oak });
+        const chestFrontMat = new THREE.MeshStandardMaterial({ map: textures.chestFront });
+        const chestMats = [chestSideMat, chestSideMat, chestSideMat, chestSideMat, chestFrontMat, chestSideMat];
+        const chest = new THREE.Mesh(chestGeo, chestMats);
+        chest.castShadow = true;
+        chestGroup.add(chest);
+        chestGroup.position.set(4.2, 0.6, -4.5);
+        roomGroup.add(chestGroup);
+
+        registerInteractive(
+            chest,
+            "末影箱",
+            "打开背包获取联系方式与社交链接",
+            "archive",
+            "socials",
+            {
+                type: "socials",
+                title: "🧰 物品栏宝箱 - 社交与联系",
+                intro: "这里先放确定来自文章的公开履历与能力标签；社交链接可后续替换成你的真实地址：",
+                links: [
+                    { name: "GitHub", handle: "@wanzheng289", icon: "github", color: "bg-yellow-700", url: "https://github.com/wanzheng289" },
+                    { name: "电子邮箱", handle: "sszzyy_2829289wmgl@126.com", icon: "mail", color: "bg-blue-700", url: "mailto:sszzyy_2829289wmgl@126.com" },
+                    { name: "教育背景", handle: "课程 / 校园 / 技能", icon: "file-text", color: "bg-green-700", url: window.LIONFISH_ARTICLES.profile }
+                ]
+            }
+        );
+
+        // --- 7. DESK REDSTONE LAMP (Interactive: Light Switch) ---
+        const lampBaseGeo = new THREE.BoxGeometry(0.4, 0.8, 0.4);
+        const lampMat = new THREE.MeshStandardMaterial({ color: 0x333333 });
+        const lampBase = new THREE.Mesh(lampBaseGeo, lampMat);
+        
+        const lampBulbGeo = new THREE.BoxGeometry(0.6, 0.6, 0.6);
+        const lampBulbMat = new THREE.MeshStandardMaterial({ color: 0xffaa00, emissive: 0xffaa00, emissiveIntensity: 0.8 });
+        const lampBulb = new THREE.Mesh(lampBulbGeo, lampBulbMat);
+        lampBulb.position.set(0, 0.6, 0);
+        lampBase.add(lampBulb);
+
+        lampBase.position.set(-2.5, 2.6, -3.5);
+        roomGroup.add(lampBase);
+
+        registerInteractive(
+            lampBase,
+            "红石台灯",
+            "切换房间灯光氛围",
+            "lamp",
+            "lamp",
+            {
+                type: "action",
+                actionType: "toggle_lamp",
+                title: "💡 红石台灯",
+                content: "你切换了红石台灯的开关！"
+            }
+        );
+
+        // --- 8. PIXEL BICYCLE / MINECART DECOR (Interactive: Fitness/Hobbies) ---
+        const bikeGroup = new THREE.Group();
+        const frameMat = new THREE.MeshStandardMaterial({ color: 0xe63946 });
+        const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+
+        // Wheels
+        const wheelGeo = new THREE.BoxGeometry(1.4, 1.4, 0.15);
+        const wheel1 = new THREE.Mesh(wheelGeo, wheelMat);
+        wheel1.position.set(-1.2, 0.7, 0);
+        const wheel2 = new THREE.Mesh(wheelGeo, wheelMat);
+        wheel2.position.set(1.2, 0.7, 0);
+        bikeGroup.add(wheel1, wheel2);
+
+        // Frame
+        const frameGeo = new THREE.BoxGeometry(2.0, 0.2, 0.2);
+        const bikeFrame = new THREE.Mesh(frameGeo, frameMat);
+        bikeFrame.position.set(0, 1.0, 0);
+        bikeGroup.add(bikeFrame);
+
+        bikeGroup.position.set(4.0, 0, 1.5);
+        bikeGroup.rotation.y = -Math.PI / 4;
+        roomGroup.add(bikeGroup);
+
+        registerInteractive(
+            bikeFrame,
+            "公路自行车",
+            "查看户外爱好与骑行记录",
+            "bike",
+            "hobbies",
+            {
+                type: "about",
+                title: "生活物品栏 - 兴趣与表达",
+                articleUrl: window.LIONFISH_ARTICLES.profile,
+                articleLabel: "阅读技能与兴趣",
+                content: `
+                    <div class="space-y-3">
+                        <p class="text-yellow-300 font-bold">代码之外，也保留一点画面感。</p>
+                        <p>文章里的“技能与兴趣”提到：我具备内容创作与多媒体制作能力，能使用 Canva、剪映、万兴喵影等工具进行视觉设计与视频剪辑；舞蹈与视频创作也是长期坚持的兴趣。</p>
+                        <div class="grid grid-cols-2 gap-2 text-center text-xs my-3">
+                            <div class="mc-dark-container p-2 border border-gray-700">
+                                <div class="text-gray-400">内容工具</div>
+                                <div class="text-green-400 font-bold mt-1">Canva / 剪映 / 万兴喵影</div>
+                            </div>
+                            <div class="mc-dark-container p-2 border border-gray-700">
+                                <div class="text-gray-400">长期兴趣</div>
+                                <div class="text-yellow-400 font-bold mt-1">舞蹈 / 视频创作</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        );
+
+        // --- 9. PIXEL PAINTING (PVZ Mushroom Art) ---
+        const paintingGeo = new THREE.BoxGeometry(2.0, 2.5, 0.1);
+        const paintingMat = new THREE.MeshBasicMaterial({ map: textures.paintingPvz });
+        const painting = new THREE.Mesh(paintingGeo, paintingMat);
+        painting.position.set(2.5, 4.8, -6.1);
+        roomGroup.add(painting);
+
+        registerInteractive(
+            painting,
+            "像素挂画",
+            "查看这个网站的建造说明",
+            "image",
+            "art",
+            {
+                type: "about",
+                title: "像素挂画 - 网站建造说明",
+                articleUrl: window.LIONFISH_ARTICLES.profile,
+                articleLabel: "查看个人经历来源",
+                content: `
+                    <div class="space-y-3">
+                        <p>这个页面保留了 Gemini+Canvas 雏形里的 Minecraft 像素房间和 Three.js 等轴视角，把房间物件改造成个人内容导航。</p>
+                        <p class="text-gray-300 text-xs">内容来源：<span class="text-yellow-300">/Users/lionfish/Desktop/my-webside/source/_posts</span> 下的教育背景、项目、研究文章。</p>
+                        <p class="text-gray-400 text-xs">后续如果补充真实 GitHub、邮箱、头像、项目截图或文章链接，可以继续把宝箱和弹窗升级成完整作品集入口。</p>
+                    </div>
+                `
+            }
+        );
+    </script>
+
+    <script>
+        /* ==========================================
+           INTERACTION, RAYCASTING & HOTBAR CONTROLS
+           ========================================== */
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        const tooltip = document.getElementById('mc-tooltip');
+        const tooltipTitle = document.getElementById('tooltip-title');
+        const tooltipDesc = document.getElementById('tooltip-desc');
+        let hoveredObject = null;
+
+        // Render Minecraft Hotbar slots dynamically based on interactive items
+        const hotbarContainer = document.getElementById('hotbar-slots');
+        interactiveObjects.forEach((obj, idx) => {
+            const data = obj.userData;
+            const slot = document.createElement('div');
+            slot.className = `hotbar-slot mc-dark-container w-12 h-12 flex items-center justify-center cursor-pointer transition-transform hover:scale-105 relative`;
+            slot.dataset.index = idx;
+            slot.title = data.name;
+            slot.innerHTML = `
+                <i data-lucide="${data.icon || 'box'}" class="w-6 h-6 text-yellow-300"></i>
+                <span class="absolute bottom-0.5 right-1 text-[9px] text-gray-400 font-bold">${idx + 1}</span>
+            `;
+            slot.addEventListener('click', () => {
+                audio.playClick();
+                focusAndOpenObject(obj);
+            });
+            hotbarContainer.appendChild(slot);
+        });
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mouse move raycasting
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(interactiveObjects, true);
+
+            if (intersects.length > 0) {
+                // Find top interactive object
+                let hit = intersects[0].object;
+                while (hit.parent && !hit.userData.interactive && hit.parent !== scene) {
+                    hit = hit.parent;
+                }
+
+                if (hit && hit.userData.interactive) {
+                    if (hoveredObject !== hit) {
+                        if (hoveredObject) resetHover(hoveredObject);
+                        hoveredObject = hit;
+                        setHover(hoveredObject);
+                    }
+
+                    // Position tooltip near cursor
+                    tooltip.classList.remove('hidden');
+                    tooltip.style.left = `${event.clientX + 15}px`;
+                    tooltip.style.top = `${event.clientY + 15}px`;
+                    tooltipTitle.textContent = hit.userData.name;
+                    tooltipDesc.textContent = hit.userData.desc;
+                    document.body.style.cursor = 'pointer';
+                    return;
+                }
+            }
+
+            if (hoveredObject) {
+                resetHover(hoveredObject);
+                hoveredObject = null;
+            }
+            tooltip.classList.add('hidden');
+            document.body.style.cursor = 'default';
+        });
+
+        function setHover(obj) {
+            obj.scale.set(
+                obj.userData.originalScale.x * 1.08,
+                obj.userData.originalScale.y * 1.08,
+                obj.userData.originalScale.z * 1.08
+            );
+        }
+
+        function resetHover(obj) {
+            if (obj && obj.userData.originalScale) {
+                obj.scale.copy(obj.userData.originalScale);
+            }
+        }
+
+        // On Click Interaction
+        window.addEventListener('click', (e) => {
+            // Ignore UI clicks
+            if (e.target.closest('#mc-modal') || e.target.closest('.pointer-events-auto')) return;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(interactiveObjects, true);
+
+            if (intersects.length > 0) {
+                let hit = intersects[0].object;
+                while (hit.parent && !hit.userData.interactive && hit.parent !== scene) {
+                    hit = hit.parent;
+                }
+                if (hit && hit.userData.interactive) {
+                    audio.playClick();
+                    focusAndOpenObject(hit);
+                }
+            }
+        });
+
+        // Focus camera & open GUI modal
+        function focusAndOpenObject(obj) {
+            const targetPos = new THREE.Vector3();
+            obj.getWorldPosition(targetPos);
+
+            // Animate camera target towards object smoothly
+            const startTarget = controls.target.clone();
+            const endTarget = new THREE.Vector3(targetPos.x, targetPos.y + 0.5, targetPos.z);
+            let startTime = performance.now();
+
+            function animateCam() {
+                const elapsed = (performance.now() - startTime) / 300;
+                if (elapsed < 1) {
+                    controls.target.lerpVectors(startTarget, endTarget, elapsed);
+                    requestAnimationFrame(animateCam);
+                } else {
+                    controls.target.copy(endTarget);
+                }
+            }
+            animateCam();
+
+            // Open Modal UI
+            openModal(obj.userData);
+        }
+    </script>
+
+    <script>
+        /* ==========================================
+           MINECRAFT MODAL GUI SYSTEM
+           ========================================== */
+        const modal = document.getElementById('mc-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalIconBox = document.getElementById('modal-icon-box');
+
+        function openModal(data) {
+            modalTitle.textContent = data.modalData.title || data.name;
+            modalIconBox.innerHTML = `<i data-lucide="${data.icon || 'box'}" class="w-6 h-6"></i>`;
+            lucide.createIcons();
+
+            let html = '';
+
+            if (data.modalData.type === 'about') {
+                html = data.modalData.content;
+                if (data.modalData.articleUrl) {
+                    html += `<a class="mc-button mc-article-link px-4 py-2 text-xs no-underline" href="${data.modalData.articleUrl}">${data.modalData.articleLabel || '阅读对应文章'}</a>`;
+                }
+            } else if (data.modalData.type === 'projects') {
+                html = `<p class="mb-3 text-gray-300">${data.modalData.intro}</p>`;
+                html += `<div class="space-y-3">`;
+                data.modalData.items.forEach(proj => {
+                    html += `
+                        <div class="mc-border p-3 bg-gray-900/90 hover:border-yellow-400 transition">
+                            <div class="font-bold text-yellow-300 text-sm mb-1">${proj.name}</div>
+                            ${proj.meta ? `<div class="text-[10px] text-gray-500 mb-2">${proj.meta}</div>` : ''}
+                            <div class="text-xs text-gray-300 mb-2">${proj.desc}</div>
+                            ${proj.detail ? `<ul class="list-disc pl-4 text-[11px] text-gray-400 mb-2 space-y-1">${proj.detail.map(point => `<li>${point}</li>`).join('')}</ul>` : ''}
+                            <div class="flex gap-1.5 flex-wrap">
+                                ${proj.tags.map(t => `<span class="mc-chip">${t}</span>`).join('')}
+                            </div>
+                            ${proj.url ? `<a class="mc-button mc-article-link px-4 py-2 text-xs no-underline" href="${proj.url}">阅读对应文章</a>` : ''}
+                            ${proj.secondaryUrl ? `<a class="mc-button mc-article-link px-4 py-2 text-xs no-underline" href="${proj.secondaryUrl}">${proj.secondaryLabel || '阅读更多'}</a>` : ''}
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            } else if (data.modalData.type === 'list') {
+                html = `<p class="mb-3 text-gray-300">${data.modalData.intro}</p>`;
+                html += `<div class="grid gap-2">`;
+                data.modalData.items.forEach(item => {
+                    html += `
+                        <div class="p-2.5 mc-dark-container border border-gray-700 flex flex-col">
+                            <span class="font-bold text-yellow-300">${item.title}</span>
+                            <span class="text-xs text-gray-400 mt-1">${item.desc}</span>
+                            ${item.tags ? `<span class="flex gap-1.5 flex-wrap mt-2">${item.tags.map(t => `<span class="mc-chip">${t}</span>`).join('')}</span>` : ''}
+                            ${item.url ? `<a class="mc-button mc-article-link px-4 py-2 text-xs no-underline" href="${item.url}">阅读对应文章</a>` : ''}
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            } else if (data.modalData.type === 'socials') {
+                audio.playChestOpen();
+                html = `<p class="mb-3 text-gray-300">${data.modalData.intro}</p>`;
+                html += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">`;
+                data.modalData.links.forEach(link => {
+                    html += `
+                        <a href="${link.url}" ${link.url === '#' ? 'aria-disabled="true"' : 'target="_blank"'} class="p-3 mc-button flex items-center gap-3 rounded text-left no-underline group">
+                            <div class="w-8 h-8 ${link.color} rounded flex items-center justify-center text-white">
+                                <i data-lucide="${link.icon}" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-yellow-300 text-xs">${link.name}</div>
+                                <div class="text-[10px] text-gray-300">${link.handle}</div>
+                            </div>
+                        </a>
+                    `;
+                });
+                html += `</div>`;
+            } else if (data.modalData.type === 'music') {
+                html = `
+                    <div class="text-center py-4 space-y-4">
+                        <div class="text-yellow-300 font-bold">Minecraft 8-Bit 像素风唱片 11</div>
+                        <p class="text-xs text-gray-300">点击下方按钮播放或暂停 Web Audio 实时合成的 8-Bit 像素背景音乐！</p>
+                        <button id="modal-bgm-btn" class="mc-button px-6 py-3 text-xs text-yellow-300 inline-flex items-center gap-2">
+                            <i data-lucide="disc" class="w-4 h-4 animate-spin"></i>
+                            开关 8-Bit 背景音乐
+                        </button>
+                    </div>
+                `;
+            } else if (data.modalData.actionType === 'toggle_lamp') {
+                toggleLamp();
+                html = `<div class="p-4 text-center text-yellow-300">💡 已切换红石台灯！</div>`;
+            }
+
+            modalBody.innerHTML = html;
+            lucide.createIcons();
+
+            // Handle special inner button handlers
+            const modalBgmBtn = document.getElementById('modal-bgm-btn');
+            if (modalBgmBtn) {
+                modalBgmBtn.addEventListener('click', () => {
+                    audio.toggleBGM((playing) => {
+                        document.getElementById('bgm-text').textContent = playing ? '音乐: 开' : '音乐: 关';
+                    });
+                });
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        // Close Modal
+        function closeModal() {
+            audio.playClick();
+            modal.classList.add('hidden');
+        }
+
+        document.getElementById('modal-close').addEventListener('click', closeModal);
+        document.getElementById('modal-ok-btn').addEventListener('click', closeModal);
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+            // Hotbar number keys 1-9
+            if (e.key >= '1' && e.key <= '9') {
+                const idx = parseInt(e.key) - 1;
+                if (interactiveObjects[idx]) {
+                    audio.playClick();
+                    focusAndOpenObject(interactiveObjects[idx]);
+                }
+            }
+        });
+
+        // --- Lamp Switch Logic ---
+        let lampOn = true;
+        function toggleLamp() {
+            lampOn = !lampOn;
+            deskLampLight.intensity = lampOn ? 1.2 : 0;
+            audio.playClick();
+        }
+
+        // --- BGM Toggle Button ---
+        document.getElementById('bgm-toggle').addEventListener('click', () => {
+            audio.toggleBGM((playing) => {
+                document.getElementById('bgm-text').textContent = playing ? '音乐: 开' : '音乐: 关';
+            });
+        });
+
+        // --- Day / Night Cycle Switcher ---
+        let isNight = false;
+        document.getElementById('daynight-toggle').addEventListener('click', () => {
+            audio.playClick();
+            isNight = !isNight;
+            if (isNight) {
+                scene.background = new THREE.Color('#05070a');
+                ambientLight.intensity = 0.2;
+                dirLight.intensity = 0.2;
+                document.getElementById('daynight-text').textContent = '夜晚';
+            } else {
+                scene.background = new THREE.Color('#0d1117');
+                ambientLight.intensity = 0.65;
+                dirLight.intensity = 0.8;
+                document.getElementById('daynight-text').textContent = '白天';
+            }
+        });
+
+        // --- Reset Camera View ---
+        document.getElementById('reset-cam-btn').addEventListener('click', () => {
+            audio.playClick();
+            camera.position.copy(defaultCamPos);
+            controls.target.set(0, 2, 0);
+        });
+
+        // --- Window Resize Handler ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- Main Render Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Subtle floating idle animation for interactive objects
+            const time = Date.now() * 0.002;
+            interactiveObjects.forEach((obj, idx) => {
+                if (obj.userData.category === 'art') {
+                    obj.rotation.y = Math.sin(time + idx) * 0.03;
+                }
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.onload = function() {
+            animate();
+        };
+    </script>
 
     </main>
     <footer class="site-footer">
